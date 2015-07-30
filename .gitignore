@@ -1,3 +1,10 @@
+######## my ignores:
+DjangoVideoTutorial/
+DjangoOficialTutorial/
+*.csv
+*.arff
+*.pdf
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
