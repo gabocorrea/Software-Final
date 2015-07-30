@@ -1,0 +1,1 @@
+slocc.sh -findopt "-name *.java" -raw -dest_dir "slocc_results_using_folder_collections" -comment collections
