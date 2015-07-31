@@ -68,11 +68,42 @@ for opt, arg in opts:
 
 
 def getJavadocCommentsListFromFile(filepath):
+	ret=[]
     with open(os.path.join(root, name)) as fdin:
 		filecontent = fdin.read()
-		########################################!!!!!!!!!!!!!!!!!!!! TODO !  falta sacar el texto entre /**   */ (excluyendo * y tabs internos y cuidado con los newlines)
+		
+		#Saco cada comentario tipo javadoc y lo agrego a una lista, la cual sera retornada por la funcion
+		# busco /**  (eso abre el javadoc)  y termina en */ ... voy a sacar el string de entre medio
+		# pero, saco los '     * ' que hay en cada otra linea (ver algun archivo de ejemplo para entender esto ultimo)
+		while i<len(filecontent):
+			try:
+				i = filecontent.index('/**')
+			except ValueError:
+				return ret
+			try:
+				f = filecontent.index('*/',i+3)
+			except ValueError:
+				i = i+3
+				continue#this can only happen with a comment of this form: '/**/' (otherwise, that .py file wouldn't even run/compile)
+				    #so we ignore this case: we don't append it to the output list
+			ret.append(filecontent[i+3:f])
+			i = f+2
+		print('code shouldn\'t have reached this line')
+		sys.exit(2)
+
 
 listofcomments=[]
 for root, dirs, files in os.walk(usrinput['in'], topdown=True):
     for name in files:
-        print(os.path.join(root, name))
+        listofcomments.extend(getJavadocCommentsListFromFile( os.path.join(root, name) ) )
+
+with open(usrinput['out']) as fdout:
+	fdout.write('id,type,path,text\n')
+	idnum=1
+	for astring in listofcomments:
+		fdout.write('{0},dummy_type,dummy_path,{1}\n'.format(idnum,astring))
+		idnum+=1
+
+#TODO: idnum es el id... pero falta el sub_id....entonces la lista listofcomments tiene que ser lista de lista para calcular
+#      el sub_id.  IMPORTANTEEEE :---> falta tambien calcular el path de cada archivo! quizas haya que hacer un dict en vez de la lista 
+#      listof comments
