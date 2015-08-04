@@ -787,7 +787,15 @@
 
     window.execBtn = function()
     {
-      $('#php').load('exec.php');
+      //$('#php').load('exec.php');
+      $.ajax({
+        url: "exec.php",
+        data: {"exportString":localStorage2ExportString},
+        type: "post",
+        success: function(data){
+          $('#php').html(data)
+        }
+      })
     }
 
   });
