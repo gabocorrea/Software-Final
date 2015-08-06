@@ -13,7 +13,7 @@
 
   echo 'exporting data';
   file_put_contents('out_web.csv', $_POST['exportString']);
-  //exec('python ./python/export.py');
+  exec('python ./python/2_process_web_output.py');
 
   echo 'done';
 ?>
