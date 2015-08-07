@@ -4,7 +4,7 @@ import sys, os, getopt, re, collections
 def usage():
 	print('''
 Usage:
-	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases
+	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases.py
 		<folder_with_comments>
 		<file_name>
 		[OPTIONS]
@@ -12,7 +12,7 @@ Usage:
 Description:
 	Reads all .java files inside a folder (recursively to inside folders), and adds each javadoc comment
 	to a .csv file that is created, but the comments are separated by the phrases that form the whole comment.
-	.java fioles inside that flder must be in a specific format, which is the same format that outputs
+	.java files inside that folder must be in a specific format, which is the same format that outputs
 	the script slocc.sh
 
 Options:
@@ -47,7 +47,7 @@ Examples:
 	
 Details:
 	The output .csv file has the following header:
-		id,sub_id,is_directive,type,path,text
+		id,sub_id,comment__class,type,path,text
 			''')
 
 
@@ -207,15 +207,18 @@ pBeg = re.compile(regexBeg,re.IGNORECASE)
 
 # escribir output a un archivo:
 with open(usrinput['out'],'w') as fdout:
-	fdout.write('id,sub_id,is_directive,type,path,text\n')
+	fdout.write('id,sub_id,comment__class,type,path,text\n')
 	idnum=1
 	for key,listWithComments in dictOfComments.items():
 		path=key
 		for astring in listWithComments:
 
+			# Replace all " with \"
+			p=re.compile(r'"')
+			astring=p.sub( r'\"', astring )
+
 
 			# Separate to phrases:
-
 			splitPositionsList = []
 
 			iteratorEnd = pEnd.finditer(astring)
@@ -230,11 +233,11 @@ with open(usrinput['out'],'w') as fdout:
 
 			nextStartPos=0
 			j=1
-			fdout.write('{0},{1},0,dummy_type,{2},{3}\n'.format(idnum,0,path,astring)) #el sub_id==0 tiene el comentario completo original
+			fdout.write('{0},{1},0,dummy_type,{2},{3}\n'.format(idnum,0,path,'"'+astring+'"')) #el sub_id==0 tiene el comentario completo original
 			for pos in splitPositionsList:
 				theText = astring[nextStartPos:pos]
 				if len(theText)>=1:
-					outstr = '{0},{1},{2},dummy_type,{3},{4}\n'.format(idnum,j,getCommentClass(theText,usrinput['classifier']),path,theText)
+					outstr = '{0},{1},{2},dummy_type,{3},{4}\n'.format(idnum,j,getCommentClass(theText,usrinput['classifier']),path,'"'+theText+'"')
 					if pos<len(astring):
 						outstr += ""
 					elif pos>len(astring):
@@ -246,7 +249,7 @@ with open(usrinput['out'],'w') as fdout:
 				
 			theText = astring[nextStartPos:]
 			if nextStartPos<len(astring) and len(theText)>=1:
-				outstr = '{0},{1},{2},dummy_type,{3},{4}\n'.format(idnum,j,getCommentClass(theText,usrinput['classifier']),path,theText)
+				outstr = '{0},{1},{2},dummy_type,{3},{4}\n'.format(idnum,j,getCommentClass(theText,usrinput['classifier']),path,'"'+theText+'"')
 
 			
 			idnum+=1

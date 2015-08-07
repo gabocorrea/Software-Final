@@ -3,21 +3,20 @@
 	
 	Todos los ids que fueron cambiados por la app index.html aparecen en el output .csv que genera la app.
 
-	Luego escribe el contenido del archivo input <input_indexhtml.csv> de index.html ('../dataset_withID_with_phrases_with-IsDirective-Info.csv')
-	en otro archivo .csv, pero reemplaza los valores de is_directive que fueron modificados por index.html (estos valores que fueron
+	Luego escribe el contenido del archivo input <input_indexhtml.csv> de index.html ('../Comments.csv')
+	en otro archivo .csv, pero reemplaza los valores de comment__class que fueron modificados por index.html (estos valores que fueron
 	modificados se encuentran en el output que genera index.html).
 	Ademas, no escribe las lineas <input_indexhtml.csv> que tienen un valor de id_sub==0, porque estas
-	lineas contienen un comentario completo (no una frase como para id_sub>0)
+	lineas contienen un comentario completo (no solo una frase como para los con el id_sub>0)
 	"""
 fdout = open("Comments_WebOutput.csv","w")
-fdout.write("id,id_sub,is_directive,type,path,text\n")
 
 
 loops = 0 #put 0 for loop until end (infinite)
 
 
 # en myset guardo la info del <input>.csv.  por ejemplo:
-#id,id_sub,is_directive
+#id,id_sub,comment__class
 #1004,3,1
 #1004,4,2
 #(esas lineas del input) queda guardado en myset como myset[1004] == {3:1,4:2}
@@ -39,7 +38,7 @@ with open("out_web.csv") as fdWebOutput:
 				if L[1] not in myset[L[0]].keys():
 					myset[L[0]][L[1]] = L[2][:-1]
 				elif L[2][:-1] != myset[L[0]][L[1]]: #si ya existe el par id-subId, y además el valor ya existente es distinto del valor nuevo, error
-					print('myError: esto no deberia pasar, se repitió un par id-subId (y tienen distinto valor de is_directive) en la linea {0} del <input>.csv... por defecto quedo el 1er valor leido de arriba a abajo'.format(i))
+					print('myError: esto no deberia pasar, se repitió un par id-subId (y tienen distinto valor de comment__class) en la linea {0} del <input>.csv... por defecto quedo el 1er valor leido de arriba a abajo'.format(i))
 					#sys.exit()
 			
 		i+=1
@@ -48,19 +47,20 @@ with open("out_web.csv") as fdWebOutput:
 #lee el archivo que usa index.html como input.
 #Para todos los ids de este archivo que no existen en 'myset', se escribe la linea original de este archivo al <output>.csv
 #Para los que si existen en 'myset' si algun valor de este archivo como input (refiriendonos
-#	al valor de is_directive (un int)) es distinto
+#	al valor de comment__class (un int)) es distinto
 #	al valor que está en la variable myset (que representa el output .csv que genera index.html)
 # 	entonces se escribe (al archivo de <output>.csv) el valor de myset. Si el valor es igual también
 #  	se escribe el de myset (daría igual cual escribir porque son iguales). Se escribe toda la linea originar
-#   pero con los valores is_directive cambiado.
+#   pero con los valores comment__class cambiado.
 differentValueCount = 0
 sameValueCount = 0
 othernum = 0
 with open("Comments.csv") as fdDataset:
 	i = 1
 	for line in fdDataset:
-
-		if i>1:
+		if i==1:
+			fdout.write(line)
+		elif i>1:
 			if loops<1 and i%10000==0:
 				print(i)
 			if loops>=1 and i>=loops:
@@ -87,6 +87,8 @@ with open("Comments.csv") as fdDataset:
 
 
 		i += 1
+
+fdout.close()
 
 print(str(differentValueCount) + ' values were changed.')
 print(str(sameValueCount) + ' values left the same as before because the new value was the same as the old.')
