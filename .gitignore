@@ -5,6 +5,11 @@ jtoro13-amisearchinterface-06dcb788b828/
 *.csv
 *.arff
 *.pdf
+*__onlyJavadoc
+projects/
+php - intento 01/projects/
+htaccess
+info.php
 
 # Windows image file caches
 Thumbs.db

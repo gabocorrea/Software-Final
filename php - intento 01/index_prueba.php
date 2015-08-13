@@ -1,3 +1,17 @@
+<?php
+
+$count = 0;
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+    foreach ($_FILES['files']['name'] as $i => $name) {
+        if (strlen($_FILES['files']['name'][$i]) > 1) {
+            if (move_uploaded_file($_FILES['files']['tmp_name'][$i], 'projects/'.$name)) {
+                $count++;
+            }
+        }
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,6 +45,8 @@
       });
     })
   </script>
+
+
 
   <style>
   .btn-file {
@@ -87,11 +103,36 @@
 
   <div class="container" style="margin-top: 2px">
 
+
     <div class="row" style="margin-bottom: 5px">
       <div class="col-lg-6 col-sm-6 col-12">
-        <h4>Open a file with comments:</h4>
+        <h4>Start new project:</h4>
+        <h6>(Extract all javadoc from files in a folder and subfolders and start tagging comments)</h6>
         <div class="input-group">
-          <span class="input-group-btn">
+          
+          <form method="post" enctype="multipart/form-data">
+            <input type="file" name="files[]" id="folder" multiple="" directory="" webkitdirectory="" mozdirectory="">
+      
+            <input class="button" type="submit" value="Upload">
+          </form>
+          <?php
+          if ($count > 0) {
+              echo "<p class='msg'>{$count} files uploaded</p>\n\n";
+          }
+          ?>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="row" style="margin-bottom: 5px">
+      <div class="col-lg-6 col-sm-6 col-12">
+        <h4>Open existing project:</h4>
+        <h6>(Open .csv file from a previously created project)</h6>
+        <div class="input-group">
+          <span class="input-group-btn">  
             <span class="btn btn-info btn-file">
               Browse <input type="file" id="file">
             </span>
@@ -297,6 +338,11 @@
   var previous_comment_lines_subset = undefined;
 
   var is_directive_setted_values = {};
+
+  document.getElementById('folder').onchange = function(){
+    console.log( "folder selected , onchange() was called\n with value:"+this.files[0] );
+  };
+
 
 
   document.getElementById('file').onchange = function(){
@@ -797,6 +843,14 @@
         }
       })
     }
+
+/*    $('#folder').onchange = function(){
+      console.log( "folder selected , onchange() was called\n" );
+      var value = $(this);
+      console.log(value.val);
+
+      file = this.files[0];
+    }*/
 
   });
 

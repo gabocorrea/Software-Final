@@ -26,17 +26,23 @@ with open("out_web.csv") as fdWebOutput:
 	i = 1
 	for line in fdWebOutput:
 		if i>1:
-			L = line.split(",",maxsplit=3)
+			L = line.split(",")
 			if L[0] not in myset.keys():
 				try:
-					myset[L[0]] = {L[1]:L[2][:-1]}
+					if len(L[2])>1:
+						myset[L[0]] = {L[1]:L[2][:-1]}
+					else:
+						myset[L[0]] = {L[1]:L[2][:]}
 				except IndexError as e:
 					print('myError: \'{2}\'  ... la linea {0} tiene {1} valores'.format(i,len(L),e))
 
 				
 			else:
 				if L[1] not in myset[L[0]].keys():
-					myset[L[0]][L[1]] = L[2][:-1]
+					if len(L[2])>1:#@TODO: esto esconde un futuro bug. el '>1' hace que el maximo numero de clases de comentarios (o is_directive) sea 10
+						myset[L[0]][L[1]] = L[2][:-1]
+					else:
+						myset[L[0]][L[1]] = L[2][:]
 				elif L[2][:-1] != myset[L[0]][L[1]]: #si ya existe el par id-subId, y además el valor ya existente es distinto del valor nuevo, error
 					print('myError: esto no deberia pasar, se repitió un par id-subId (y tienen distinto valor de comment__class) en la linea {0} del <input>.csv... por defecto quedo el 1er valor leido de arriba a abajo'.format(i))
 					#sys.exit()

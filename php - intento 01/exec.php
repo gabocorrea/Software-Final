@@ -1,4 +1,7 @@
 <?php
+  /* falta reemplazar el nombre out, por el nombre de la carpeta de salida */
+
+
   echo 'removing ./out/ folder';
   exec('rmdir out');
 
