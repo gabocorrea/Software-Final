@@ -40,6 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       listener.simple_combo("k", function() {nextPhrase(); updateMyLogger();});
       listener.simple_combo("l", function() {nextComment(); updateMyLogger();});
       listener.simple_combo("j", function() {previousComment('start'); updateMyLogger();});
+      listener.simple_combo("w", function() {previousPhrase(); updateMyLogger();});
+      listener.simple_combo("s", function() {nextPhrase(); updateMyLogger();});
+      listener.simple_combo("d", function() {nextComment(); updateMyLogger();});
+      listener.simple_combo("a", function() {previousComment('start'); updateMyLogger();});
       $('#file').on('fileselect', function(event, numFiles, label) {
         $('#file_name').val(label);
       });
@@ -70,6 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   input[readonly] {
     background-color: white !important;
     cursor: text !important;
+  }
+  .tooltip-inner {
+    max-width: none;
+    white-space: nowrap;
   }
 
   mark{color:#000;background:#ff0}
@@ -152,112 +160,312 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div id="buttons_and_comments">
 
+	    <div class="container-fluid">
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+					 
+					<button type="button" class="btn btn-default btn-block" onclick="previousPhrase();" data-toggle="tooltip" data-placement="top" title="&#8593 or i or W">
+              			<span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+					 
+					<button type="button" class="btn btn-default btn-block" onclick="previousComment();" data-toggle="tooltip" data-placement="top" title="&#8592 or J or A">
+              			<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-md-1">
+					 
+					<button type="button" class="btn btn-default btn-block" onclick="nextPhrase();" data-toggle="tooltip" data-placement="bottom" title="&#8595 or K or S">
+              			<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-md-1">
+					 
+					<button type="button" class="btn btn-default btn-block" onclick="nextComment();" data-toggle="tooltip" data-placement="top" title="&#8594 or L or D">
+              			<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-3">
+					 
+					<button type="button" class="btn btn-default btn-block" onclick="toggleDirectiveField();" data-toggle="tooltip" data-placement="right" title="(space)">
+            			change class
+					</button>
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+				<div class="col-md-1">
+				</div>
+			</div>
 
 
-     <div id="buttons" style="margin-top: 10px">
-
-      
-          <div class="col-sm-offset-7">
-            <button type="button" class="btn btn-success btn-sm" onclick="previousPhrase();">
-              <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
-            </button>
-          </div>
-       
-
-        
-        <div class="inline-block col-sm-offset-5">
-          <button type="button" class=" col-sm-4 btn btn-default btn-sm" onclick="toggleDirectiveField();">
-            Toggle Comment Type (space)
-          </button>
-          
-
-            <button type="button" class="btn btn-default btn-sm" onclick="previousComment();">
-              <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-danger btn-sm" onclick="nextPhrase();">
-              <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="btn btn-default btn-sm" onclick="nextComment();">
-              <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
-            </button>
-            
-          
-        </div>
 
 
-      </div>
+			<div class="row" style="margin-top:5px">
+				<div class="col-md-4">
+				</div>
+				<div class="col-md-2" style="text-align:right; padding-right:0">
+					<label class="">Go to ID:</label>
+				</div>
+				<div class="col-md-1" style="padding-left:1">
+				    <input id="id_comment" style="width:140%" onchange="changeId();">
+				</div>
+				<div class="col-md-1">
+					<button type="button" id="go_to_id_button" class="btn btn-default" onclick="changeId();" style="padding-bottom:3px; padding-top:2px" data-toggle="tooltip" data-placement="right" title="(or just press Enter)">
+            			go
+					</button>
+				</div>
+				<div class="col-md-1">
+				</div>
+			</div>
 
+			<div class="row">
+				<div class="col-md-4">
+				</div>
+				<div class="col-md-2" style="text-align:right; padding-right:0">
+					<h5 class="">Sub-ID:</h5>
+				</div>
+				<div class="col-md-1 text-center">
+					<h5 id="sub_id_comment">_</h5>
+				</div>
+				<div class="col-md-2">
+				</div>
+			</div>
 
-
-      <div>
-        <div>
-          status:
-        </div>
-        <div id='php'>
-          idle
-        </div>
-      </div>
-
-
-
-      <div class="text-center">
-        <div class="row">
-            <label class="">ID: </label>
-            <input id="id_comment" onchange="changeId();">
-            <span>(the '-' is not necessary)</span>
-        </div>
-        <div class="row">
-          <h4 id="type_comment" class="">_</h4>
-        </div>
-        <div class="row">
-          <h4 id="path_comment" class="">_</h4>
-        </div>
-        
-        <p id='mylogger'></p>
-      </div>
-
-      <div id="comment" class="col-md-12">
-        <pre id="commentPre">
-        </pre>
-      </div>
-
-
-
-
-      <br>
-
-      <div class="row">
-        <div class="col-md-3">
-        <button type="button" class="btn btn-default btn-lg btn-block" onclick="toggleExportText();" data-toggle="tooltip" data-placement="top" title="Copy this text to a file to export all data">
-          <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-          Toggle export data
-        </button>
-        </div>
-        <div class="col-md-6">
-        <button type="button" class="btn btn-info btn-lg btn-block" onclick="toggleLocalStorageText();">
-          <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-          Toggle export data (readable)
-        </button>
-        </div>
-        <div class="col-md-3">
-        <button type="button" class="btn btn-warning btn-lg btn-block" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="The app forgets all the states set by the user in the past (data is stored in your hard drive)">
-          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-          Erase all data
-        </button>
-        </div>
-      </div>
+		</div>
 
 
 
 
 
-      <div id="out">
-        <pre id="outText">
 
-        </pre>
-      </div>
+
+
+
+
+
+
+
+
+
+
+		<div>
+			<div>
+			  status:
+			</div>
+			<div id='php'>
+			  idle
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-2">
+					<label class="">Type of Comment:</label>
+				</div>
+				<div class="col-md-2 left-align">
+			  		<h5 id="type_comment" class="">_</h5>
+				</div>
+				<div class="col-md-4">
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-2">
+					<h5 class="">Class:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5 id="ToDo IdHere0012913234" class="">_</h5>
+				</div>
+				<div class="col-md-4">
+				</div>
+			</div>
+			
+
+			<div class="row">
+				<div class="col-md-2">
+					<h5 id="type_comment" class="">Path of File:</h5>
+				</div>
+				<div class="col-md-2">
+				  <h5 id="path_comment" class="">_</h5>
+				</div>
+				<div class="col-md-4">
+				</div>
+			</div>
+
+			<p id='mylogger'></p>
+		</div>
+
+
+
+
+
+
+
+
+
+		<div id="comment" class="col-md-12">
+			<pre id="commentPre">
+			</pre>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<br>
+
+		<div class="row">
+		<div class="col-md-3">
+		<button type="button" class="btn btn-default btn-lg btn-block" onclick="toggleExportText();" data-toggle="tooltip" data-placement="top" title="Copy this text to a file to export all data">
+		  <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
+		  Toggle export data
+		</button>
+		</div>
+		<div class="col-md-6">
+		<button type="button" class="btn btn-info btn-lg btn-block" onclick="toggleLocalStorageText();">
+		  <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
+		  Toggle export data (readable)
+		</button>
+		</div>
+		<div class="col-md-3">
+		<button type="button" class="btn btn-warning btn-lg btn-block" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="The app forgets all the states set by the user in the past (data is stored in your hard drive)">
+		  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		  Erase all data
+		</button>
+		</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+		<div id="out">
+		<pre id="outText">
+
+		</pre>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     </div>
@@ -511,7 +719,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   function updateId()
   {
     var line = mysplit(lines_current_subset[phrase_pointer],',',2);
-    showId(line[0]+'-'+line[1]);
+    showId(line[0]);
   }
   function updateType()
   {
@@ -628,17 +836,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     
 
     if (is_directive == '0') {
-      is_directive_setted_values[myLineVar[0]][phrase_pointer] = '2'
-      console.log("phrase set to 2 (revise-later)\n");
-    } else if (is_directive == '1') {
-      is_directive_setted_values[myLineVar[0]][phrase_pointer] = '0'
-      console.log("phrase set to 0 (non-directive)\n");
-    } else if (is_directive == '2') {
-      is_directive_setted_values[myLineVar[0]][phrase_pointer] = '3'
-      console.log("phrase set to 3 (comment-with-null)\n");
-    } else if (is_directive == '3') {
       is_directive_setted_values[myLineVar[0]][phrase_pointer] = '1'
       console.log("phrase set to 1 (directive)\n");
+    } else if (is_directive == '1') {
+      is_directive_setted_values[myLineVar[0]][phrase_pointer] = '3'
+      console.log("phrase set to 3 (comment-with-null)\n");
+    } else if (is_directive == '2') {
+      is_directive_setted_values[myLineVar[0]][phrase_pointer] = '0'
+      console.log("phrase set to 0 (non-directive)\n");
+    } else if (is_directive == '3') {
+      is_directive_setted_values[myLineVar[0]][phrase_pointer] = '2'
+      console.log("phrase set to 2 (revise-later)\n");
     } else {
       console.error("esto no deberia pasar, is_directive="+is_directive);
     }
@@ -851,6 +1059,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
       file = this.files[0];
     }*/
+
+
+	$("#id_comment").keyup(function(event){
+	    if(event.keyCode == 13){
+	        $("#go_to_id_button").click();
+	    }
+	});
+
 
   });
 
