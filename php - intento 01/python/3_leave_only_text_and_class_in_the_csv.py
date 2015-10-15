@@ -14,39 +14,8 @@ Description:
 	Lee como input un archivo .csv con header id,sub_id,comment__class,type,path,text.
 	El output es un archivo .csv con header text,comment__class
 
-Options:
-	-h, --help
-		print help and usage of this script
-
-	-c, --classifier
-		Must be NONE or KEYWORDS. If NONE, phrases won't be given a color (or a type of comment).
-		If KEYWORDS, phrases with at least one keyword - see keywords below - will be given a yellow color (directive-type comment).
-		NONE is the default if option is left blank.
-
-		keywords:
-			call*,invo*,before,after,between,once,prior,must,mandat*,require*,shall,
-			should,encourage*,recommend*,may,assum*,only,debug*,restrict*,never,
-			condition*,strict*,necessar*,portab*,strong*,performan*,efficien*,fast,
-			quick,better,best,concurren*,synchron*,lock*,thread*,simultaneous*,
-			desir*,alternativ*,addition*,extend*,overrid*,overload*,overwrit*,
-			reimplement*,subclass*,super*,inherit*,warn*,aware*,error*,note*
-
-	-m, --minlines
-		Sets the minimum lines a javadoc comment nees to have in ordered to be included in the output file.
-		(IMPORTANT:)By default is 4. For example, the following javadoc comment has 4 lines:
-			/** Returns a {@link Set} of unique elements in the Bag.
-			 * 
-			 * @return the Set of unique Bag elements
-			 */
-			
 Examples:
-	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn out.csv
-	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn out.csv -c KEYWORDS
-	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn out.csv -c KEYWORDS --minlines=3
-	
-Details:
-	The output .csv file has the following header:
-		id,sub_id,comment__class,type,path,text
+	python 3_leave_only_text_and_class_in_the_csv.py in.csv
 
 		""")
 

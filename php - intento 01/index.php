@@ -1,29 +1,18 @@
-<?php
-
-$count = 0;
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    foreach ($_FILES['files']['name'] as $i => $name) {
-        if (strlen($_FILES['files']['name'][$i]) > 1) {
-            if (move_uploaded_file($_FILES['files']['tmp_name'][$i], 'projects/'.$name)) {
-                $count++;
-            }
-        }
-    }
-}
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>CommentsReaderApp</title>
+  <title>CHi - Comments Highlighter</title>
 
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
 
   <!-- Optional theme -->
   <link rel="stylesheet" href="bootstrap/bootstrap-theme.min.css">
+
+  <!-- Webpage icon (shows when someone bookmarks the page) -->
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 
   <script type="text/javascript" src="scripts/jquery-2.1.3.js"></script>
   <script type="text/javascript" src="scripts/keypress.js"></script>
@@ -109,53 +98,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 </head>
 <body>
 
-  <div class="container" style="margin-top: 2px">
+  <div class="container" style="margin-top: 11px;">
+
+	<div class="container center-block">
+		
+    <div class="row" style="margin-bottom: 5px;" >
+
+  		<div class="col-sm-1">
+  		</div>
+
+  		<div class="col-sm-4">
+  			<h3 data-toggle="tooltip" data-placement="top" title="Extract all javadoc from files in a folder and subfolders and start tagging comments">New project</h3>
+  			<div class="input-group">
+  			  
+  			  <span class="input-group-btn">  
+  			    <span class="btn btn-info btn-file">
+  			      Folder <input type="file" id="folderNew" name="folderPost[]" multiple="" directory="" webkitdirectory="" mozdirectory="">
+  			    </span>
+  			  </span>
+  			  <input id='folder_name' type="text" class="form-control" readonly>
+
+  				<!-- <form action="upload.php" method="post" enctype="multipart/form-data">
+  					<input class="btn" type="file" name="files[]" id="folder" multiple="" directory="" webkitdirectory="" mozdirectory="">
+
+  					<input class="btn btn-default" type="submit" value="Upload">
+  				</form> -->
+  				<?php
+  					// if ($count > 0) {
+  					//   echo "<p class='msg'>{$count} files uploaded</p>\n\n";
+  					// }
+  				?>
+  			</div>
+  		</div>
 
 
-    <div class="row" style="margin-bottom: 5px">
-      <div class="col-lg-6 col-sm-6 col-12">
-        <h4>Start new project:</h4>
-        <h6>(Extract all javadoc from files in a folder and subfolders and start tagging comments)</h6>
-        <div class="input-group">
-          
-          <form method="post" enctype="multipart/form-data">
-            <input type="file" name="files[]" id="folder" multiple="" directory="" webkitdirectory="" mozdirectory="">
-      
-            <input class="button" type="submit" value="Upload">
-          </form>
-          <?php
-          if ($count > 0) {
-              echo "<p class='msg'>{$count} files uploaded</p>\n\n";
-          }
-          ?>
-        </div>
+  		<div class="col-sm-1 text-center">
+  			<img src="fonts/or-small.png">
+  		</div>
+
+  		<div class="col-sm-4">
+  			<h3 data-toggle="tooltip" data-placement="top" title="Open .csv file from a previously created project">Open project</h3>
+  			<div class="input-group">
+  			  <span class="input-group-btn">  
+  			    <span class="btn btn-info btn-file">
+  			      File <input type="file" id="file">
+  			    </span>
+  			  </span>
+  			  <input id='file_name' type="text" class="form-control" readonly>
+  			</div>
+  		</div>
+
+
+  		<div class="col-sm-1">
+  		</div>
+
+    </div>
+
+
+
+
+
+
+    <div class="row">
+      <div id="uploadsSuccessMsg" class="col-sm-11 text-center">
       </div>
     </div>
 
 
 
 
-    <div class="row" style="margin-bottom: 5px">
-      <div class="col-lg-6 col-sm-6 col-12">
-        <h4>Open existing project:</h4>
-        <h6>(Open .csv file from a previously created project)</h6>
-        <div class="input-group">
-          <span class="input-group-btn">  
-            <span class="btn btn-info btn-file">
-              Browse <input type="file" id="file">
-            </span>
-          </span>
-          <input id='file_name' type="text" class="form-control" readonly>
-        </div>
-      </div>
-    </div>
 
 
-      <div class="col-sm-offset-7">
-        <button type="button" class="btn btn-info btn-sm" onclick="execBtnTrigger();">
-            extract comments, then run python scripts (toPhrases->..)
-        </button>
-      </div>
+
+  </div>
+
+
+
+
+  </br>
 
 
 
@@ -174,101 +194,104 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 
-    <div id="buttons_and_comments">
+
+
+
+    <div id="buttons_and_comments" class="container center-block">
 
 	    <div class="container-fluid">
 			<div class="row">
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
-				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 					 
 					<button type="button" class="btn btn-default btn-block" onclick="previousPhrase();" data-toggle="tooltip" data-placement="top" title="&#8593 or i or W">
               			<span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
 					</button>
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
+				</div>
+				<div class="col-xs-1">
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
-				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 					 
 					<button type="button" class="btn btn-default btn-block" onclick="previousComment();" data-toggle="tooltip" data-placement="top" title="&#8592 or J or A">
               			<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
 					</button>
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 					 
 					<button type="button" class="btn btn-default btn-block" onclick="nextPhrase();" data-toggle="tooltip" data-placement="bottom" title="&#8595 or K or S">
               			<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
 					</button>
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 					 
 					<button type="button" class="btn btn-default btn-block" onclick="nextComment();" data-toggle="tooltip" data-placement="top" title="&#8594 or L or D">
               			<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
 					</button>
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
+				</div>
+				<div class="col-xs-1">
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
-				</div>
-				<div class="col-md-3">
+				<div class="col-xs-3">
 					 
 					<button type="button" class="btn btn-default btn-block" onclick="toggleDirectiveField();" data-toggle="tooltip" data-placement="right" title="(space)">
             			change class
 					</button>
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
+				</div>
+				<div class="col-xs-1">
 				</div>
 			</div>
 
@@ -276,33 +299,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 			<div class="row" style="margin-top:5px">
-				<div class="col-md-4">
+				<div class="col-xs-3">
 				</div>
-				<div class="col-md-2" style="text-align:right; padding-right:0">
-					<label class="">Go to ID:</label>
+				<div class="col-xs-2" style="text-align:right; padding-right:0">
+					<label class="">Comment ID</label>
 				</div>
-				<div class="col-md-1" style="padding-left:1">
+				<div class="col-xs-1" style="padding-left:1;font-weight:bold;">
 				    <input id="id_comment" style="width:140%" onchange="changeId();">
 				</div>
-				<div class="col-md-1">
+				<div class="col-xs-1">
 					<button type="button" id="go_to_id_button" class="btn btn-default" onclick="changeId();" style="padding-bottom:3px; padding-top:2px" data-toggle="tooltip" data-placement="right" title="(or just press Enter)">
             			go
 					</button>
 				</div>
-				<div class="col-md-1">
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-4">
-				</div>
-				<div class="col-md-2" style="text-align:right; padding-right:0">
-					<h5 class="">Sub-ID:</h5>
-				</div>
-				<div class="col-md-1 text-center">
-					<h5 id="sub_id_comment">_</h5>
-				</div>
-				<div class="col-md-2">
+				<div class="col-xs-2 text-left">
+					<label id="sub_id_comment">Phrase </label>
 				</div>
 			</div>
 
@@ -317,20 +328,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 
-
-
-
-
-
-
-		<div>
-			<div>
-			  status:
-			</div>
-			<div id='php'>
-			  idle
-			</div>
-		</div>
 
 
 
@@ -347,37 +344,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-2">
-					<label class="">Type of Comment:</label>
+				<div class="col-xs-2 text-right">
+					<label style="margin-top:5px">Type of Comment</label>
 				</div>
-				<div class="col-md-2 left-align">
+				<div class="col-xs-2 left-align">
 			  		<h5 id="type_comment" class="">_</h5>
 				</div>
-				<div class="col-md-4">
+				<div class="col-xs-7">
+				</div>
+				<div class="col-xs-1">
 				</div>
 			</div>
 
 
 			<div class="row">
-				<div class="col-md-2">
-					<h5 class="">Class:</h5>
+				<div class="col-xs-2 text-right" >
+					<label style="margin-top:5px">Class</label>
 				</div>
-				<div class="col-md-2">
-					<h5 id="ToDo IdHere0012913234" class="">_</h5>
+				<div class="col-xs-6">
+					<h5 id="javaclass_comment" class="">_</h5>
 				</div>
-				<div class="col-md-4">
+				<div class="col-xs-3">
+				</div>
+				<div class="col-xs-1">
 				</div>
 			</div>
 			
 
 			<div class="row">
-				<div class="col-md-2">
-					<h5 id="type_comment" class="">Path of File:</h5>
+				<div class="col-xs-2 text-right">
+					<label style="margin-top:5px">Path of File</label>
 				</div>
-				<div class="col-md-2">
+				<div class="col-xs-9">
 				  <h5 id="path_comment" class="">_</h5>
 				</div>
-				<div class="col-md-4">
+				<div class="col-xs-1">
 				</div>
 			</div>
 
@@ -390,11 +391,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 
-
-
-		<div id="comment" class="col-md-12">
-			<pre id="commentPre">
-			</pre>
+		<div class="row">
+			<div id="comment" class="col-sm-11">
+				<pre id="commentPre">
+				</pre>
+			</div>
+			<div class="col-sm-1">
+			</div>
 		</div>
 
 
@@ -417,26 +420,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 		<br>
 
-		<div class="row">
-		<div class="col-md-3">
-		<button type="button" class="btn btn-default btn-lg btn-block" onclick="toggleExportText();" data-toggle="tooltip" data-placement="top" title="Copy this text to a file to export all data">
-		  <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-		  Toggle export data
-		</button>
+	<div class="row">
+		<div class="col-sm-3">
+	  		<button type="button" class="btn btn-default btn-sm btn-block" onclick="toggleExportText();" data-toggle="tooltip" data-placement="top" title="Shows your modifications in .csv format">
+	  		  <span id="ShowHideModificationsButtonIcon" class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
+	  		  Show/Hide Modifications
+	  		</button>
 		</div>
-		<div class="col-md-6">
-		<button type="button" class="btn btn-info btn-lg btn-block" onclick="toggleLocalStorageText();">
-		  <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-		  Toggle export data (readable)
-		</button>
+	    <div class="col-sm-3">
+	      <button type="button" class="btn btn-default btn-sm btn-block" onclick="toggleExportText();" data-toggle="tooltip" data-placement="top" title="Export to <Project Name>-WebOutput.csv">
+	        <span id="ShowHideModificationsButtonIcon" class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+	        Export Modifications
+	      </button>
+	    </div>
+	    <div class="col-sm-3">
+	    </div>
+		<div class="col-sm-1">
+	  		<button type="button" class="btn btn-danger btn-sm" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="All your modifications are forgotten">
+	  		  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+	  		  Erase all Modifications
+	  		</button>
 		</div>
-		<div class="col-md-3">
-		<button type="button" class="btn btn-warning btn-lg btn-block" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="The app forgets all the states set by the user in the past (data is stored in your hard drive)">
-		  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-		  Erase all data
-		</button>
+		<div class="col-sm-1">
 		</div>
+		<div class="col-sm-1">
 		</div>
+	</div>
 
 
 
@@ -459,7 +468,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 
-
+		</br>
+		
 
 
 
@@ -525,6 +535,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   outHidden = true;
   $("#outText").hide();
+
   //$('#buttons_and_comments').hide();
 
   // Check if client's browser version can handle HTML5's Local Storage
@@ -547,10 +558,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   var is_directive_setted_values = {};
 
-  document.getElementById('folder').onchange = function(){
-    console.log( "folder selected , onchange() was called\n with value:"+this.files[0] );
-  };
-
 
 
   document.getElementById('file').onchange = function(){
@@ -566,8 +573,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       calculateCurrentLinesSubset();
       updateText();
       updateId();
+   	  updateSubId();
       updateType();
       updatePath();
+      updateJavaClass();
       updateMyLogger();
       console.log(Object.keys(is_directive_setted_values).length);
       populateDirectiveSettedValuesDictionary();
@@ -586,14 +595,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     input.trigger('fileselect', [numFiles, label]);
   });
 
+  $(document).on('change', '#folderNew', function() {
+      console.log( "folder selected , onchange() was called\n" );
 
-
-
-  function execBtnTrigger()
-  {
-    execBtn();
-  }
-
+      folderBtn();
+  });
 
 
   function nextPhrase()
@@ -603,8 +609,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       phrase_pointer += 1;
       updateText();
       updateId();
+      updateSubId();
       updateType();
       updatePath();
+      updateJavaClass();
     } else {
       nextComment();
     }
@@ -618,8 +626,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       phrase_pointer -= 1;
       updateText();
       updateId();
+      updateSubId();
       updateType();
       updatePath();
+      updateJavaClass();
     } else{
       previousComment('end');
     }
@@ -635,8 +645,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       phrase_pointer = 1;
       updateText();
       updateId();
+      updateSubId();
       updateType();
       updatePath();
+      updateJavaClass();
     }
   }
 
@@ -659,8 +671,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       }
       updateText();
       updateId();
+      updateSubId();
       updateType();
       updatePath();
+      updateJavaClass();
     }
   }
   function calculateCurrentLinesSubset()
@@ -721,6 +735,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     var line = mysplit(lines_current_subset[phrase_pointer],',',2);
     showId(line[0]);
   }
+  function updateSubId()
+  {
+    var line = mysplit(lines_current_subset[phrase_pointer],',',2);
+    showSubId(line[1]);
+  }
   function updateType()
   {
     var line = mysplit(lines_current_subset[phrase_pointer],',',4);
@@ -730,6 +749,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   {
     var line = mysplit(lines_current_subset[phrase_pointer],',',5);
     showPath(line[4]);
+  }
+  function updateJavaClass()
+  {
+  	var line = mysplit(lines_current_subset[phrase_pointer],',',5);
+  	var path = line[4];
+
+  	// Check if string starts with ./ or ../ or .\ or ..\     if that is the case, ommit those chars and work with the rest of the string
+  	if (path.length>1 && path[0]=='.')
+  	{
+  		path = path.substring(1);
+  		if(path.length>1 && path[0]=='.')
+  		{
+  			path = path.substring(1);
+  		}
+  		if(path.length>1 && (path[0]=='/' || path[0]=='\\'))
+  		{
+  			path = path.substring(1);
+  		}
+  	} else if (path.length>1 && (path[0]=='/' || path[0]=='\\'))
+  	{
+  		path = path.substring(1);
+  	}
+
+
+  	var split = mysplit(path,'/');
+  	if (split.length==1)
+  	{
+  		split = mysplit(path,'\\');
+  	}
+  	var s = split[split.length-1];
+  	console.log("____________\n"+path+"\n___")
+  	showJavaClass(s);
   }
 
 
@@ -764,15 +815,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       }
 
 
+      // take substring from the first " to the last "
+      var phrase = splitted_line[5];
+      var start = phrase.indexOf('"');
+      if (start==-1){
+        start = 0;
+      }
+      var end = phrase.lastIndexOf('"');
+      if (end==-1){
+        end = prase.length;
+      }
+      var phrase = splitted_line[5].substring(start+1,end);
 
       if (is_directive == '0') {
-        comment += '<span class="inline bg-gris'+selected_phrase_dict[''+i]+'">'+splitted_line[5]+'</span>';
+        comment += '<span class="inline bg-gris'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
       } else if (is_directive == '1') {
-        comment += '<span class="inline bg-amarillo'+selected_phrase_dict[''+i]+'">'+splitted_line[5]+'</span>';
+        comment += '<span class="inline bg-amarillo'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
       } else if (is_directive == '2') {
-        comment += '<span class="inline bg-azul'+selected_phrase_dict[''+i]+'">'+splitted_line[5]+'</span>';
+        comment += '<span class="inline bg-azul'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
       } else if (is_directive == '3') {
-        comment += '<span class="inline bg-naranjo'+selected_phrase_dict[''+i]+'">'+splitted_line[5]+'</span>';
+        comment += '<span class="inline bg-naranjo'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
       } else {
         console.error('myError: se leyó una directiva distinta a {0,1,2}');
         return;
@@ -961,8 +1023,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         phrase_pointer = 1;
         updateText();
         updateId();
+        updateSubId();
         updateType();
         updatePath();
+        updateJavaClass();
         updateMyLogger();
 
 
@@ -1016,6 +1080,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       $("#id_comment").val( str );
  
     }
+    window.showSubId = function(str)
+    {
+      console.log("showSubId() was called");
+
+      $("#sub_id_comment").empty();
+      $("#sub_id_comment").append( "Phrase "+str );
+ 
+    }
     window.showType = function(str)
     {
       console.log("showType() was called");
@@ -1032,6 +1104,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       $("#path_comment").append( str );
  
     }
+    window.showJavaClass = function(str)
+    {
+    	console.log("showJavaClass() was called");
+
+    	$("#javaclass_comment").empty();
+    	$("#javaclass_comment").append(str)
+    }
 
     window.showLog = function(str)
     {
@@ -1039,26 +1118,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       $('#mylogger').append( "<br></br><h5><u>debugging log:</u></h5>"+ str);
     }
 
-    window.execBtn = function()
+    // exec.php has calls to important python scripts.
+    window.callExecPhp = function(projectName)
     {
-      //$('#php').load('exec.php');
+      var formdata = new FormData();
+
+      formdata.append('exportString',localStorage2ExportString());
+      formdata.append('projectName',projectName);
+
       $.ajax({
         url: "exec.php",
-        data: {"exportString":localStorage2ExportString},
-        type: "post",
+        data: formdata,
+        contentType: false,
+        processData: false,
+        type: "POST",
+        dataType: "json",
         success: function(data){
-          $('#php').html(data)
+          $('#uploadsSuccessMsg').append(data); //this show a Log, on the body of the page, of what happened after de AJAX call
+          //TODO: llamar a subir el archivo
+          //var csvfile = data["csvfile"];
         }
       })
     }
 
-/*    $('#folder').onchange = function(){
-      console.log( "folder selected , onchange() was called\n" );
-      var value = $(this);
-      console.log(value.val);
+    window.folderBtn = function()
+    {
+      var fileInput = $('#folderNew')[0];
+      var formdata = new FormData();
 
-      file = this.files[0];
-    }*/
+      for(var i = 0; i < fileInput.files.length; ++i){
+          formdata.append('folderPost[]',fileInput.files[i]);
+          formdata.append('folderPostFullDirectory[]',fileInput.files[i].webkitRelativePath);
+      }
+
+      $.ajax({
+        url: "upload.php", //if url is not set, then we are sending data to this same file
+        data: formdata,
+        contentType: false,
+        processData: false,
+        method: "POST",
+        dataType: "json",
+        success: function(data){
+          var success = data["success"];
+          var successMsg = data["successMsg"];
+          if (success == 0)
+          {
+            //TODO: make a progress bar
+          } else if (success == 1)
+          {
+            $('#uploadsSuccessMsg').append(data["successMsg"]);
+          } else if (success == 2)
+          {
+            $('#uploadsSuccessMsg').append(data["successMsg"]);
+          }
+
+          var projectName = data["projectName"];
+          callExecPhp(projectName);
+
+          var numUploadedFiles = data["uploadedFilesCount"]; //TODO: show this number somewhere on the webpage (maybe)
+
+          console.debug(data["debug"]);
+          
+        }
+      })
+    }
+
+
 
 
 	$("#id_comment").keyup(function(event){
@@ -1090,7 +1215,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       var arr = [];
       var j=-1;
 
-
+      if (maxSplit==undefined)
+      {
+      	maxSplit=aStringCpy.length-1;
+      }
       for (var n=0; n<=maxSplit; n++) {
           aStringCpy = aStringCpy.slice(j+1)
           if (n==maxSplit) {
@@ -1110,25 +1238,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   }
 
 
-  function localStorage2String(){
-    ret = '';
-    if (Object.keys(localStorage).length>0) {
-      for (key in localStorage){
-        obj = JSON.parse(localStorage[key]);
-        s = '\n' + key + ':';
-        if (typeof(obj) != 'object') {
-          s += '\n\tmyError!: This is not an object/dictionary and it should be. It is of type <'+typeof(obj)+'>';
-        }
-        for (key_2 in obj) {
-          s += '\n\t'+key_2+':'+obj[key_2];
-        }
-        ret += s;
-      }
-    } else {
-      ret += 'localStorage is empty.';
-    }
-    return ret;
-  }
 
   function help(){
     console.log("______________\nhelp:\n\n"
@@ -1181,26 +1290,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
       }
     } else {
-      ret += 'localStorage is empty.';
+      ret = 'No modifications yet';
     }
     return ret;
   }
 
-
-
-
-
-  function toggleLocalStorageText() {
-      if (outHidden) {
-        $("#outText").empty();
-        $("#outText").append( localStorage2String() );
-        $('#outText').show();
-        outHidden = false;
-      } else {
-        $('#outText').hide();
-        outHidden = true;
-      }
-  }
 
 
   function toggleExportText() {
@@ -1209,9 +1303,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $("#outText").append( localStorage2ExportString() );
         $('#outText').show();
         outHidden = false;
+		$("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-up').removeClass('glyphicon-collapse-down');
       } else {
         $('#outText').hide();
         outHidden = true;
+		$("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-down').removeClass('glyphicon-collapse-up');
       }
   }
 

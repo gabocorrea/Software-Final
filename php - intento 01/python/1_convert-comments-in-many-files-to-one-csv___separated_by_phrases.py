@@ -41,9 +41,9 @@ Options:
 			 */
 			
 Examples:
-	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn out.csv
-	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn out.csv -c KEYWORDS
-	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn out.csv -c KEYWORDS --minlines=3
+	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn ./folderSource out.csv
+	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn ./folderSource out.csv -c KEYWORDS
+	python 1_convert-comments-in-many-files-to-one-csv___separated_by_phrases folderIn ./folderSource out.csv -c KEYWORDS --minlines=3
 	
 Details:
 	The output .csv file has the following header:

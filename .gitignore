@@ -2,12 +2,14 @@
 DjangoVideoTutorial/
 DjangoOficialTutorial/
 jtoro13-amisearchinterface-06dcb788b828/
+API source code/
 *.csv
 *.arff
 *.pdf
 *__onlyJavadoc
 projects/
-php - intento 01/projects/
+php - intento 01/projects/projects-Comments
+php - intento 01/projects-Comments
 htaccess
 info.php
 
