@@ -9,7 +9,12 @@
 	Ademas, no escribe las lineas <input_indexhtml.csv> que tienen un valor de id_sub==0, porque estas
 	lineas contienen un comentario completo (no solo una frase como para los con el id_sub>0)
 	"""
-fdout = open("Comments_WebOutput.csv","w")
+import sys
+
+filePath_in_project = sys.argv[1]
+filePath_in_modifications = sys.argv[2]
+
+fdout = open(filePath_in_project[:-4]+'-export.csv',"w")
 
 
 loops = 0 #put 0 for loop until end (infinite)
@@ -22,7 +27,7 @@ loops = 0 #put 0 for loop until end (infinite)
 #(esas lineas del input) queda guardado en myset como myset[1004] == {3:1,4:2}
 #el bloque de codigo siguiente se encarga de llenar myset.
 myset = {}
-with open("out_web.csv") as fdWebOutput:
+with open(filePath_in_modifications) as fdWebOutput:
 	i = 1
 	for line in fdWebOutput:
 		if i>1:
@@ -61,7 +66,7 @@ with open("out_web.csv") as fdWebOutput:
 differentValueCount = 0
 sameValueCount = 0
 othernum = 0
-with open("Comments.csv") as fdDataset:
+with open(filePath_in_project) as fdDataset:
 	i = 1
 	for line in fdDataset:
 		if i==1:

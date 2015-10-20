@@ -16,6 +16,8 @@
 
   <script type="text/javascript" src="scripts/jquery-2.1.3.js"></script>
   <script type="text/javascript" src="scripts/keypress.js"></script>
+  <script type="text/javascript" src="scripts/spin.js"></script>
+  <script type="text/javascript" src="scripts/spin.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       var listener = new window.keypress.Listener();
@@ -117,17 +119,6 @@
   			    </span>
   			  </span>
   			  <input id='folder_name' type="text" class="form-control" readonly>
-
-  				<!-- <form action="upload.php" method="post" enctype="multipart/form-data">
-  					<input class="btn" type="file" name="files[]" id="folder" multiple="" directory="" webkitdirectory="" mozdirectory="">
-
-  					<input class="btn btn-default" type="submit" value="Upload">
-  				</form> -->
-  				<?php
-  					// if ($count > 0) {
-  					//   echo "<p class='msg'>{$count} files uploaded</p>\n\n";
-  					// }
-  				?>
   			</div>
   		</div>
 
@@ -155,7 +146,7 @@
     </div>
 
 
-
+    <a id="my_link_for_export_project" style="display:none;"></a>
 
 
 
@@ -185,7 +176,7 @@
 
 
 
-
+  <div id="spinner" hidden="true" style="position:absolute;left:0;top:0;background: rgba(255,255,255,.5);width:100%;height:100%;"></div>
 
 
 
@@ -422,15 +413,15 @@
 
 	<div class="row">
 		<div class="col-sm-3">
-	  		<button type="button" class="btn btn-default btn-sm btn-block" onclick="toggleExportText();" data-toggle="tooltip" data-placement="top" title="Shows your modifications in .csv format">
+	  		<button type="button" class="btn btn-default btn-sm btn-block" onclick="showModifications();" data-toggle="tooltip" data-placement="top" title="Show your modifications in .csv format">
 	  		  <span id="ShowHideModificationsButtonIcon" class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
 	  		  Show/Hide Modifications
 	  		</button>
 		</div>
 	    <div class="col-sm-3">
-	      <button type="button" class="btn btn-default btn-sm btn-block" onclick="toggleExportText();" data-toggle="tooltip" data-placement="top" title="Export to <Project Name>-WebOutput.csv">
+	      <button id="ExportBtn" type="button" class="btn btn-default btn-sm btn-block" onclick="exportProject();" data-toggle="tooltip" data-placement="top" title="Export modifications to <Project Name>-export.csv">
 	        <span id="ShowHideModificationsButtonIcon" class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-	        Export Modifications
+	        Export Project
 	      </button>
 	    </div>
 	    <div class="col-sm-3">
@@ -545,7 +536,7 @@
       alert("Update your Browser or use Google Chrome (Error: HTML5's Local Storage is not supported in this browser version.");
   }
 
-
+// Global Variables:
   var debug = false;
   var commentsDict = [];
   var lines = [];
@@ -555,48 +546,75 @@
   var current_line_pointer = 2;
   var phrase_pointer = 1;
   var previous_comment_lines_subset = undefined;
+  var _projectName = undefined;
 
   var is_directive_setted_values = {};
 
 
 
-  document.getElementById('file').onchange = function(){
-    console.log( "file selected , onchange() was called\n" );
 
-    file = this.files[0];
 
-    var reader = new FileReader();
-    reader.onload = function(progressEvent){
-      // save lines to a global variable
-      var s_temp = 'dummy_line\n'+this.result;
-      lines = s_temp.split('\n');
-      calculateCurrentLinesSubset();
-      updateText();
-      updateId();
-   	  updateSubId();
-      updateType();
-      updatePath();
-      updateJavaClass();
-      updateMyLogger();
-      console.log(Object.keys(is_directive_setted_values).length);
-      populateDirectiveSettedValuesDictionary();
-      console.log(Object.keys(is_directive_setted_values).length);
-    };
-    reader.readAsText(file);
 
-    $('#buttons_and_comments').show();
+
+//  Spinner for loading during AJAX calls:
+
+  var opts = {
+    lines: 13 // The number of lines to draw
+  , length: 11 // The length of each line
+  , width: 15 // The line thickness
+  , radius: 36 // The radius of the inner circle
+  , scale: 1 // Scales overall size of the spinner
+  , corners: 1 // Corner roundness (0..1)
+  , color: '#000' // #rgb or #rrggbb or array of colors
+  , opacity: 0.1 // Opacity of the lines
+  , rotate: 0 // The rotation offset
+  , direction: 1 // 1: clockwise, -1: counterclockwise
+  , speed: 1 // Rounds per second
+  , trail: 58 // Afterglow percentage
+  , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+  , zIndex: 2e9 // The z-index (defaults to 2000000000)
+  , className: 'spinner' // The CSS class to assign to the spinner
+  , top: '70%' // Top position relative to parent
+  , left: '50%' // Left position relative to parent
+  , shadow: false // Whether to render a shadow
+  , hwaccel: false // Whether to use hardware acceleration
+  , position: 'absolute' // Element positioning
   };
+  var target = document.getElementById('spinner');
+  var spinner = new Spinner(opts).spin(target);
+  spinner.stop();
 
-  //show file selected in text input (readonly)
+  $(document).ajaxStart(function(){
+      $('#spinner').show();
+      spinner.spin(target);
+  });
+
+  $(document).ajaxStop(function(){
+      $('#spinner').hide();
+      spinner.stop();
+  });
+
+
+
+
+
+
+
+
+
+
+  //Open Project Button: upload file and show file selected in text input (readonly)
   $(document).on('change', '#file', function() {
     var input = $(this),
         numFiles = input.get(0).files ? input.get(0).files.length : 1,
         label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
     input.trigger('fileselect', [numFiles, label]);
+
+    openProjectFromFile( this.files[0] );
   });
 
   $(document).on('change', '#folderNew', function() {
-      console.log( "folder selected , onchange() was called\n" );
+      
 
       folderBtn();
   });
@@ -604,7 +622,7 @@
 
   function nextPhrase()
   {
-    console.log("nextPhrase function was called\n");
+    
     if (phrase_pointer<lines_current_subset.length-1) {
       phrase_pointer += 1;
       updateText();
@@ -620,8 +638,6 @@
 
   function previousPhrase()
   {
-    console.log("previousPhrase function was called\n");
-    console.log('current_line_pointer:' +current_line_pointer);
     if (phrase_pointer>1) {
       phrase_pointer -= 1;
       updateText();
@@ -637,9 +653,8 @@
 
   function nextComment()
   {
-      console.log("nextComment function was called\n");
+      
     if (current_line_pointer<lines.length-1) {
-      console.log(lines_current_subset.length);
       current_line_pointer += lines_current_subset.length;
       calculateCurrentLinesSubset();
       phrase_pointer = 1;
@@ -656,7 +671,7 @@
   {
     offset = typeof(offset) !== 'undefined' ? offset : 'start';
 
-    console.log("previousComment function was called\n");
+    
     if (current_line_pointer>2) {
       
       prevSubset = getPreviousLinesSubset();
@@ -685,13 +700,11 @@
 
     for (var i=1;i<200;i++) { //maximo examinar max 200 lineas para que no exista un loop infinito
       if (current_line_pointer_cpy>=lines.length) {
-        console.log('break (malo solo deberia pasar cuando se acaba el archivo) with i='+i)
         break;
       }
       var id = mysplit(lines[current_line_pointer_cpy],',',1)[0];
       
       if ( i>1 && id!=lastId) {
-        console.log('break (bueno) with i='+i)
         break;
       }
       var lastId = id;
@@ -708,11 +721,10 @@
     
     for (var i=1; i<200;i++) { //maximo examinar 200 lineas por si llega a haber un loop infinito
       if (current_line_pointer_cpy<=2) {
-        console.log('i='+i);
         if ( i==1 ) {
           console.log('cant go to previous comment because this one is the first one.');
         } else {
-          console.log('break (bueno) with i='+i);
+          
         }
         break;
       }
@@ -779,7 +791,6 @@
   		split = mysplit(path,'\\');
   	}
   	var s = split[split.length-1];
-  	console.log("____________\n"+path+"\n___")
   	showJavaClass(s);
   }
 
@@ -805,7 +816,7 @@
         ss = 'else';
       }
       if (i==phrase_pointer) {
-        console.log('\n**is_directive('+ss+')='+is_directive+'\n');
+        //console.log('\n**is_directive('+ss+')='+is_directive+'\n');
       }
 
       if (i==phrase_pointer){
@@ -825,7 +836,7 @@
       if (end==-1){
         end = prase.length;
       }
-      var phrase = splitted_line[5].substring(start+1,end);
+      phrase = splitted_line[5].substring(start+1,end);
 
       if (is_directive == '0') {
         comment += '<span class="inline bg-gris'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
@@ -864,20 +875,20 @@
 
   function yes()
   {
-    console.log("yes() function was called\n");
+    
 
     ////wrong call to .split (call mysplit) localStorage.setItem(""+current_line_pointer, lines[current_line_pointer].split(',',1)[0]+",1\n");
   }
 
   function no()
   {
-    console.log("no() function was called\n");
+    
 
     ////wrong call to .split (call mysplit) localStorage.setItem(""+current_line_pointer, lines[current_line_pointer].split(',',1)[0]+",0\n");
   }
   function toggleDirectiveField()
   {
-    console.log("toggleDirectiveField() function was called\n");
+    
 
     myLineVar = mysplit(lines[current_line_pointer+phrase_pointer],',',3);
 
@@ -932,7 +943,7 @@
     
   }
   function eraseLocalStorage(){
-    console.log('eraseLocalStorage() function was called');
+    
 
     var ans = confirm('Are you sure?');
     if (ans) {
@@ -958,7 +969,7 @@
   }
 
   function changeId(){
-    console.log("changeId function was called\n");
+    
 
     theValue = $('#id_comment').val();
     splittedArray = mysplit(theValue,'-',1);
@@ -1055,7 +1066,7 @@
 
     window.showText = function(str)
     {
-      console.log("showText() was called");
+      
       ////// Last version: splitted_line[5].replace(/<[^>]+>/g,'') //esto es para ignorar todos los tags
       str = str.replace(/<\/?p>/g,'');
       str = str.replace(/<\/?ul>/g,'');
@@ -1074,7 +1085,7 @@
 
     window.showId = function(str)
     {
-      console.log("showId() was called");
+      
 
 
       $("#id_comment").val( str );
@@ -1082,7 +1093,7 @@
     }
     window.showSubId = function(str)
     {
-      console.log("showSubId() was called");
+      
 
       $("#sub_id_comment").empty();
       $("#sub_id_comment").append( "Phrase "+str );
@@ -1090,7 +1101,7 @@
     }
     window.showType = function(str)
     {
-      console.log("showType() was called");
+      
 
       $("#type_comment").empty();
       $("#type_comment").append( str );
@@ -1098,7 +1109,7 @@
     }
     window.showPath = function(str)
     {
-      console.log("showPath() was called");
+      
 
       $("#path_comment").empty();
       $("#path_comment").append( str );
@@ -1106,7 +1117,7 @@
     }
     window.showJavaClass = function(str)
     {
-    	console.log("showJavaClass() was called");
+    	
 
     	$("#javaclass_comment").empty();
     	$("#javaclass_comment").append(str)
@@ -1118,8 +1129,8 @@
       $('#mylogger').append( "<br></br><h5><u>debugging log:</u></h5>"+ str);
     }
 
-    // exec.php has calls to important python scripts.
-    window.callExecPhp = function(projectName)
+    // newProject.php has calls to important python scripts.
+    window.callNewProjectPHP = function(projectName)
     {
       var formdata = new FormData();
 
@@ -1127,18 +1138,27 @@
       formdata.append('projectName',projectName);
 
       $.ajax({
-        url: "exec.php",
+        url: "newProject.php",
         data: formdata,
         contentType: false,
         processData: false,
         type: "POST",
         dataType: "json",
         success: function(data){
+          console.info("success! returned from newProject.php");
           $('#uploadsSuccessMsg').append(data); //this show a Log, on the body of the page, of what happened after de AJAX call
           //TODO: llamar a subir el archivo
           //var csvfile = data["csvfile"];
+          _projectName = projectName;
+
+
+          // open file to show comments in the webpage
+          var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/project.csv", function() {
+            showComments(fileToOpen.responseText);
+          });
+          
         }
-      })
+      });//END AJAX
     }
 
     window.folderBtn = function()
@@ -1152,36 +1172,107 @@
       }
 
       $.ajax({
-        url: "upload.php", //if url is not set, then we are sending data to this same file
+        url: "uploadFolder.php", //if url is not set, then we are sending data to this same file
         data: formdata,
         contentType: false,
         processData: false,
         method: "POST",
         dataType: "json",
         success: function(data){
+          console.info("success! returned from uploadFolder.php");
           var success = data["success"];
           var successMsg = data["successMsg"];
           if (success == 0)
           {
             //TODO: make a progress bar
-          } else if (success == 1)
-          {
-            $('#uploadsSuccessMsg').append(data["successMsg"]);
-          } else if (success == 2)
-          {
-            $('#uploadsSuccessMsg').append(data["successMsg"]);
+          } else {
+            $('#uploadsSuccessMsg').append(successMsg);
           }
+          
 
           var projectName = data["projectName"];
-          callExecPhp(projectName);
+          callNewProjectPHP(projectName);
+          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+"-export.csv"; //show project name in tooltip of ExportBtn
 
           var numUploadedFiles = data["uploadedFilesCount"]; //TODO: show this number somewhere on the webpage (maybe)
+
+
+
 
           console.debug(data["debug"]);
           
         }
-      })
+      });//END AJAX
     }
+
+
+
+    window.uploadFilePHP = function()
+    {
+      // upload file to update server copy of that file (this is needed by some python scripts of the webpage running in the server)
+      var formdata = new FormData();
+      
+
+      $.ajax({
+        url: "uploadFile.php", //if url is not set, then we are sending data to this same file
+        data: formdata,
+        contentType: false,
+        processData: false,
+        method: "POST",
+        dataType: "json",
+        success: function(data){
+          console.info("success! returned from uploadFile.php");
+          var success = data["success"];
+          var successMsg = data["successMsg"];
+          if (success == 0)
+          {
+            //TODO: make a progress bar
+          } else {
+            $('#uploadsSuccessMsg').append(successMsg);
+          }
+          var projectName = $('#file')[0].files[0].name;          
+          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+"-export.csv"; //show project name in tooltip of ExportBtn
+
+          _projectName = projectName;
+        }
+      });//END AJAX
+
+
+    }
+
+    window.showComments = function(fileContents)
+    {
+      // save lines to a global variable
+      var s_temp = 'dummy_line\n'+fileContents;
+      lines = s_temp.split('\n');
+      calculateCurrentLinesSubset();
+      updateText();
+      updateId();
+      updateSubId();
+      updateType();
+      updatePath();
+      updateJavaClass();
+      updateMyLogger();
+      populateDirectiveSettedValuesDictionary();
+
+      $('#buttons_and_comments').show();
+    }
+
+    window.openProjectFromFile = function(aFile)
+    {
+      var reader = new FileReader();
+      reader.onload = function(progressEvent){
+        uploadFilePHP();
+        showComments( this.result );
+      };
+      reader.readAsText(aFile);
+    }
+
+
+
+
+
+
 
 
 
@@ -1194,6 +1285,59 @@
 
 
   });
+
+
+
+
+
+  function exportProject() {
+      var formdata = new FormData();
+
+      formdata.append('exportString',localStorage2ExportString());
+      if (_projectName != undefined) {
+        formdata.append('projectName',_projectName);
+      } else {
+        console.info("MyError: global variable _projectName is undefined");
+      }
+
+      $.ajax({
+        url: "export.php",
+        data: formdata,
+        contentType: false,
+        processData: false,
+        type: "POST",
+        dataType: "json",
+        success: function(data){
+          console.info("success! returned from export.php");
+          //$('#TODO').append(data); //this show a Log, on the body of the page, of what happened after de AJAX call
+          //var csvfile = data["csvfile"];
+          
+          var link_download = $("#my_link_for_export_project")[0];
+
+          link_download.download = _projectName+".csv";
+          link_download.href = "projects/"+_projectName+"/CHi-files/project.csv";
+          link_download.click();
+
+
+        }
+      });//End AJAX
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1297,7 +1441,7 @@
 
 
 
-  function toggleExportText() {
+  function showModifications() {
       if (outHidden) {
         $("#outText").empty();
         $("#outText").append( localStorage2ExportString() );
@@ -1310,7 +1454,6 @@
 		$("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-down').removeClass('glyphicon-collapse-up');
       }
   }
-
 
   function increase_brightness(hex, percent){
       // strip the leading # if it's there
@@ -1338,9 +1481,12 @@
 
 
 
+
+
     $(function () { //enables pretty tooltips from bootstrap
       $('[data-toggle="tooltip"]').tooltip();
     })
+
 
   </script>
 
