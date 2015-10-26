@@ -93,8 +93,7 @@ with open(filePath_in_project) as fdDataset:
 				othernum += 1
 				valueToWrite = thedirectivevalue
 
-			if thesubid!='0':
-				fdout.write(','.join([line_splitted[0],line_splitted[1],valueToWrite,line_splitted[3],line_splitted[4],line_splitted[5]]))
+			fdout.write(','.join([line_splitted[0],line_splitted[1],valueToWrite,line_splitted[3],line_splitted[4],line_splitted[5]]))
 
 
 		i += 1

@@ -1,9 +1,10 @@
 <?php
-include "C:\Program Files\chromePHP\ChromePhp.php";
+// include "C:\Program Files\chromePHP\ChromePhp.php";
+// 
+//error_reporting(E_ALL);
 
-error_reporting(E_ALL);
+header('Content-type: application/json'); //don't know what this line does, so i commented it
 
-//header('Content-type: application/json'); //don't know what this line does, so i commented it
 
 
 $ret = $_POST;
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	        }
 	    }
 
-	    ChromePhp::log($count."files uploaded");
+	   
 	    $ret["uploadedFilesCount"] = $count;
 
 	} else { // Else, there was an programming error related to de $_FILES variable
@@ -111,6 +112,9 @@ function fixFolderName($path)
 		array_push($fixedParts, implode('_',explode(' ',$p)));
 	}
 	unset($p);
+	if (implode($osPathSeparator,$fixedParts) == ""  ||  implode($osPathSeparator,$fixedParts) === undefined) {
+	
+	}
 	return implode($osPathSeparator,$fixedParts);
 }
 

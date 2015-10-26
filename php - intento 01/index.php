@@ -100,48 +100,57 @@
 </head>
 <body>
 
+  <div id="CompatibilityMsg" style="visibility:hidden;" class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Error:</span>
+    Please use a browser that supports LocalStorage.
+  </div>
+
+
   <div class="container" style="margin-top: 11px;">
 
-	<div class="container center-block">
-		
+
+
+  <div class="container center-block">
+    
     <div class="row" style="margin-bottom: 5px;" >
 
-  		<div class="col-sm-1">
-  		</div>
+      <div class="col-sm-1">
+      </div>
 
-  		<div class="col-sm-4">
-  			<h3 data-toggle="tooltip" data-placement="top" title="Extract all javadoc from files in a folder and subfolders and start tagging comments">New project</h3>
-  			<div class="input-group">
-  			  
-  			  <span class="input-group-btn">  
-  			    <span class="btn btn-info btn-file">
-  			      Folder <input type="file" id="folderNew" name="folderPost[]" multiple="" directory="" webkitdirectory="" mozdirectory="">
-  			    </span>
-  			  </span>
-  			  <input id='folder_name' type="text" class="form-control" readonly>
-  			</div>
-  		</div>
-
-
-  		<div class="col-sm-1 text-center">
-  			<img src="fonts/or-small.png">
-  		</div>
-
-  		<div class="col-sm-4">
-  			<h3 data-toggle="tooltip" data-placement="top" title="Open .csv file from a previously created project">Open project</h3>
-  			<div class="input-group">
-  			  <span class="input-group-btn">  
-  			    <span class="btn btn-info btn-file">
-  			      File <input type="file" id="file">
-  			    </span>
-  			  </span>
-  			  <input id='file_name' type="text" class="form-control" readonly>
-  			</div>
-  		</div>
+      <div class="col-sm-4">
+        <h3 data-toggle="tooltip" data-placement="top" title="Extract all javadoc from files in a folder and subfolders and start tagging comments">New project</h3>
+        <div class="input-group">
+          
+          <span class="input-group-btn">  
+            <span class="btn btn-info btn-file">
+              Folder <input type="file" id="folderNew" name="folderPost[]" multiple="" directory="" webkitdirectory="" mozdirectory="">
+            </span>
+          </span>
+          <input id='folder_name' type="text" class="form-control" readonly>
+        </div>
+      </div>
 
 
-  		<div class="col-sm-1">
-  		</div>
+      <div class="col-sm-1 text-center">
+        <img src="fonts/or-small.png">
+      </div>
+
+      <div class="col-sm-4">
+        <h3 data-toggle="tooltip" data-placement="top" title="Open .csv file from a previously created project">Open project</h3>
+        <div class="input-group">
+          <span class="input-group-btn">  
+            <span class="btn btn-info btn-file">
+              File <input type="file" id="file">
+            </span>
+          </span>
+          <input id='file_name' type="text" class="form-control" readonly>
+        </div>
+      </div>
+
+
+      <div class="col-sm-1">
+      </div>
 
     </div>
 
@@ -154,10 +163,6 @@
       <div id="uploadsSuccessMsg" class="col-sm-11 text-center">
       </div>
     </div>
-
-
-
-
 
 
 
@@ -190,125 +195,128 @@
 
     <div id="buttons_and_comments" class="container center-block">
 
-	    <div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-					 
-					<button type="button" class="btn btn-default btn-block" onclick="previousPhrase();" data-toggle="tooltip" data-placement="top" title="&#8593 or i or W">
-              			<span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
-					</button>
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-					 
-					<button type="button" class="btn btn-default btn-block" onclick="previousComment();" data-toggle="tooltip" data-placement="top" title="&#8592 or J or A">
-              			<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
-					</button>
-				</div>
-				<div class="col-xs-1">
-					 
-					<button type="button" class="btn btn-default btn-block" onclick="nextPhrase();" data-toggle="tooltip" data-placement="bottom" title="&#8595 or K or S">
-              			<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-					</button>
-				</div>
-				<div class="col-xs-1">
-					 
-					<button type="button" class="btn btn-default btn-block" onclick="nextComment();" data-toggle="tooltip" data-placement="top" title="&#8594 or L or D">
-              			<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
-					</button>
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-3">
-					 
-					<button type="button" class="btn btn-default btn-block" onclick="toggleDirectiveField();" data-toggle="tooltip" data-placement="right" title="(space)">
-            			change class
-					</button>
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-				<div class="col-xs-1">
-				</div>
-			</div>
-
-
-
-
-			<div class="row" style="margin-top:5px">
-				<div class="col-xs-3">
-				</div>
-				<div class="col-xs-2" style="text-align:right; padding-right:0">
-					<label class="">Comment ID</label>
-				</div>
-				<div class="col-xs-1" style="padding-left:1;font-weight:bold;">
-				    <input id="id_comment" style="width:140%" onchange="changeId();">
-				</div>
-				<div class="col-xs-1">
-					<button type="button" id="go_to_id_button" class="btn btn-default" onclick="changeId();" style="padding-bottom:3px; padding-top:2px" data-toggle="tooltip" data-placement="right" title="(or just press Enter)">
-            			go
-					</button>
-				</div>
-				<div class="col-xs-2 text-left">
-					<label id="sub_id_comment">Phrase </label>
-				</div>
-			</div>
+      <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+           
+          <button type="button" class="btn btn-default btn-block" onclick="previousPhrase();" data-toggle="tooltip" data-placement="top" title="&#8593 or i or W">
+                    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+           
+          <button type="button" class="btn btn-default btn-block" onclick="previousComment();" data-toggle="tooltip" data-placement="top" title="&#8592 or J or A">
+                    <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="col-xs-1">
+           
+          <button type="button" class="btn btn-default btn-block" onclick="nextPhrase();" data-toggle="tooltip" data-placement="bottom" title="&#8595 or K or S">
+                    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="col-xs-1">
+           
+          <button type="button" class="btn btn-default btn-block" onclick="nextComment();" data-toggle="tooltip" data-placement="top" title="&#8594 or L or D">
+                    <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-3">
+           
+          <button type="button" class="btn btn-default btn-block" onclick="toggleDirectiveField();" data-toggle="tooltip" data-placement="right" title="(space)">
+                  change class
+          </button>
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-1">
+        </div>
+      </div>
+
+
+
+
+      <div class="row" style="margin-top:5px">
+        <div class="col-xs-3">
+        </div>
+        <div class="col-xs-2" style="text-align:right; padding-right:0">
+          <label class="">Comment ID</label>
+        </div>
+        <div class="col-xs-1" style="padding-left:1;font-weight:bold;">
+            <input id="id_comment" style="width:140%" onchange="changeId();">
+        </div>
+<!--         <div class="col-xs-1">
+          <button type="button" id="go_to_id_button" class="btn btn-default" onclick="changeId();" style="padding-bottom:3px; padding-top:2px" data-toggle="tooltip" data-placement="bottom" title="(or just press Enter)">
+                  go
+          </button>
+        </div> -->
+        <div class="col-xs-1" style="padding-bottom:3px; padding-top:2px; padding-left:0px">
+          <label id="id_comment_total">/maxID</label>
+        </div>
+        <div class="col-xs-2 text-left">
+          <label id="sub_id_comment" style="padding-bottom:3px; padding-top:2px; padding-left:0px">Phrase </label>
+        </div>
+      </div>
 
-		</div>
+    </div>
 
 
 
@@ -333,48 +341,48 @@
 
 
 
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-2 text-right">
-					<label style="margin-top:5px">Type of Comment</label>
-				</div>
-				<div class="col-xs-2 left-align">
-			  		<h5 id="type_comment" class="">_</h5>
-				</div>
-				<div class="col-xs-7">
-				</div>
-				<div class="col-xs-1">
-				</div>
-			</div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-2 text-right">
+          <label style="margin-top:5px">Type of Comment</label>
+        </div>
+        <div class="col-xs-2 left-align">
+            <h5 id="type_comment" class="">_</h5>
+        </div>
+        <div class="col-xs-7">
+        </div>
+        <div class="col-xs-1">
+        </div>
+      </div>
 
 
-			<div class="row">
-				<div class="col-xs-2 text-right" >
-					<label style="margin-top:5px">Class</label>
-				</div>
-				<div class="col-xs-6">
-					<h5 id="javaclass_comment" class="">_</h5>
-				</div>
-				<div class="col-xs-3">
-				</div>
-				<div class="col-xs-1">
-				</div>
-			</div>
-			
+      <div class="row">
+        <div class="col-xs-2 text-right" >
+          <label style="margin-top:5px">Class</label>
+        </div>
+        <div class="col-xs-6">
+          <h5 id="javaclass_comment" class="">_</h5>
+        </div>
+        <div class="col-xs-3">
+        </div>
+        <div class="col-xs-1">
+        </div>
+      </div>
+      
 
-			<div class="row">
-				<div class="col-xs-2 text-right">
-					<label style="margin-top:5px">Path of File</label>
-				</div>
-				<div class="col-xs-9">
-				  <h5 id="path_comment" class="">_</h5>
-				</div>
-				<div class="col-xs-1">
-				</div>
-			</div>
+      <div class="row">
+        <div class="col-xs-2 text-right">
+          <label style="margin-top:5px">Path of File</label>
+        </div>
+        <div class="col-xs-9">
+          <h5 id="path_comment" class="">_</h5>
+        </div>
+        <div class="col-xs-1">
+        </div>
+      </div>
 
-			<p id='mylogger'></p>
-		</div>
+      <p id='mylogger'></p>
+    </div>
 
 
 
@@ -382,14 +390,14 @@
 
 
 
-		<div class="row">
-			<div id="comment" class="col-sm-11">
-				<pre id="commentPre">
-				</pre>
-			</div>
-			<div class="col-sm-1">
-			</div>
-		</div>
+    <div class="row">
+      <div id="comment" class="col-sm-11">
+        <pre id="commentPre">
+        </pre>
+      </div>
+      <div class="col-sm-1">
+      </div>
+    </div>
 
 
 
@@ -409,34 +417,34 @@
 
 
 
-		<br>
+    <br>
 
-	<div class="row">
-		<div class="col-sm-3">
-	  		<button type="button" class="btn btn-default btn-sm btn-block" onclick="showModifications();" data-toggle="tooltip" data-placement="top" title="Show your modifications in .csv format">
-	  		  <span id="ShowHideModificationsButtonIcon" class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-	  		  Show/Hide Modifications
-	  		</button>
-		</div>
-	    <div class="col-sm-3">
-	      <button id="ExportBtn" type="button" class="btn btn-default btn-sm btn-block" onclick="exportProject();" data-toggle="tooltip" data-placement="top" title="Export modifications to <Project Name>-export.csv">
-	        <span id="ShowHideModificationsButtonIcon" class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-	        Export Project
-	      </button>
-	    </div>
-	    <div class="col-sm-3">
-	    </div>
-		<div class="col-sm-1">
-	  		<button type="button" class="btn btn-danger btn-sm" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="All your modifications are forgotten">
-	  		  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-	  		  Erase all Modifications
-	  		</button>
-		</div>
-		<div class="col-sm-1">
-		</div>
-		<div class="col-sm-1">
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-sm-3">
+        <button type="button" class="btn btn-default btn-sm btn-block" onclick="showModifications();" data-toggle="tooltip" data-placement="top" title="Show your modifications in .csv format">
+          <span id="ShowHideModificationsButtonIcon" class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
+          <span id="ShowHideModificationsLabel">Show Modifications</span>
+        </button>
+    </div>
+      <div class="col-sm-3">
+        <button id="ExportBtn" type="button" class="btn btn-default btn-sm btn-block" onclick="exportProject();" data-toggle="tooltip" data-placement="top" title="Export modifications to <Project Name>.csv">
+          <span id="exportButtonIcon" class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+          Save/Export Project
+        </button>
+      </div>
+      <div class="col-sm-3">
+      </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-danger btn-sm" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="All your project's modifications are forgotten">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          Erase Modifications
+        </button>
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+  </div>
 
 
 
@@ -448,19 +456,19 @@
 
 
 
-		<div id="out">
-		<pre id="outText">
+    <div id="out">
+    <pre id="outText">
 
-		</pre>
-		</div>
+    </pre>
+    </div>
 
 
 
 
 
 
-		</br>
-		
+    </br>
+    
 
 
 
@@ -527,14 +535,7 @@
   outHidden = true;
   $("#outText").hide();
 
-  //$('#buttons_and_comments').hide();
-
-  // Check if client's browser version can handle HTML5's Local Storage
-  if(typeof(Storage) !== "undefined") {
-    ;
-  } else {
-      alert("Update your Browser or use Google Chrome (Error: HTML5's Local Storage is not supported in this browser version.");
-  }
+  $('#buttons_and_comments').hide();
 
 // Global Variables:
   var debug = false;
@@ -555,22 +556,21 @@
 
 
 
-
 //  Spinner for loading during AJAX calls:
 
   var opts = {
-    lines: 13 // The number of lines to draw
-  , length: 11 // The length of each line
-  , width: 15 // The line thickness
-  , radius: 36 // The radius of the inner circle
+    lines: 15 // The number of lines to draw
+  , length: 3 // The length of each line
+  , width: 2 // The line thickness
+  , radius: 18 // The radius of the inner circle
   , scale: 1 // Scales overall size of the spinner
-  , corners: 1 // Corner roundness (0..1)
+  , corners: 0 // Corner roundness (0..1)
   , color: '#000' // #rgb or #rrggbb or array of colors
-  , opacity: 0.1 // Opacity of the lines
+  , opacity: 0.25 // Opacity of the lines
   , rotate: 0 // The rotation offset
   , direction: 1 // 1: clockwise, -1: counterclockwise
   , speed: 1 // Rounds per second
-  , trail: 58 // Afterglow percentage
+  , trail: 60 // Afterglow percentage
   , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
   , zIndex: 2e9 // The z-index (defaults to 2000000000)
   , className: 'spinner' // The CSS class to assign to the spinner
@@ -596,6 +596,16 @@
 
 
 
+
+
+  // Check if LocalStorage is available
+  if(typeof(Storage) === "undefined" || localStorage === null || localStorage === undefined) {
+    document.getElementById("CompatibilityMsg").style.visibility = "visible";
+    document.getElementById("folderNew").disabled = true;
+    document.getElementById("file").disabled = true;
+  } else {
+    // we are cool
+  }
 
 
 
@@ -655,7 +665,7 @@
   {
       
     if (current_line_pointer<lines.length-1) {
-      current_line_pointer += lines_current_subset.length;
+      current_line_pointer += lines_current_subset.length-1; //-1 because remmember there is a dummy line.
       calculateCurrentLinesSubset();
       phrase_pointer = 1;
       updateText();
@@ -680,7 +690,7 @@
       if (offset=='start') {
         phrase_pointer=1;
       } else if (offset == 'end') {
-        phrase_pointer=lines_current_subset.length-1;
+        phrase_pointer=lines_current_subset.length-1; //-1 because remmember there is a dummy line.
       } else {
         alert('myError: called previousComment() function with an incorrect parameter');
       }
@@ -697,6 +707,7 @@
     var current_line_pointer_cpy = current_line_pointer;
 
     lines_current_subset=[];
+    lines_current_subset.push(lines[current_line_pointer_cpy]); //dummy line. Long ago, cvs input files started from sub-id==0. Now, to patch that we add this dummy line
 
     for (var i=1;i<200;i++) { //maximo examinar max 200 lineas para que no exista un loop infinito
       if (current_line_pointer_cpy>=lines.length) {
@@ -764,34 +775,34 @@
   }
   function updateJavaClass()
   {
-  	var line = mysplit(lines_current_subset[phrase_pointer],',',5);
-  	var path = line[4];
+    var line = mysplit(lines_current_subset[phrase_pointer],',',5);
+    var path = line[4];
 
-  	// Check if string starts with ./ or ../ or .\ or ..\     if that is the case, ommit those chars and work with the rest of the string
-  	if (path.length>1 && path[0]=='.')
-  	{
-  		path = path.substring(1);
-  		if(path.length>1 && path[0]=='.')
-  		{
-  			path = path.substring(1);
-  		}
-  		if(path.length>1 && (path[0]=='/' || path[0]=='\\'))
-  		{
-  			path = path.substring(1);
-  		}
-  	} else if (path.length>1 && (path[0]=='/' || path[0]=='\\'))
-  	{
-  		path = path.substring(1);
-  	}
+    // Check if string starts with ./ or ../ or .\ or ..\     if that is the case, ommit those chars and work with the rest of the string
+    if (path.length>1 && path[0]=='.')
+    {
+      path = path.substring(1);
+      if(path.length>1 && path[0]=='.')
+      {
+        path = path.substring(1);
+      }
+      if(path.length>1 && (path[0]=='/' || path[0]=='\\'))
+      {
+        path = path.substring(1);
+      }
+    } else if (path.length>1 && (path[0]=='/' || path[0]=='\\'))
+    {
+      path = path.substring(1);
+    }
 
 
-  	var split = mysplit(path,'/');
-  	if (split.length==1)
-  	{
-  		split = mysplit(path,'\\');
-  	}
-  	var s = split[split.length-1];
-  	showJavaClass(s);
+    var split = mysplit(path,'/');
+    if (split.length==1)
+    {
+      split = mysplit(path,'\\');
+    }
+    var s = split[split.length-1];
+    showJavaClass(s);
   }
 
 
@@ -873,19 +884,6 @@
   }
 
 
-  function yes()
-  {
-    
-
-    ////wrong call to .split (call mysplit) localStorage.setItem(""+current_line_pointer, lines[current_line_pointer].split(',',1)[0]+",1\n");
-  }
-
-  function no()
-  {
-    
-
-    ////wrong call to .split (call mysplit) localStorage.setItem(""+current_line_pointer, lines[current_line_pointer].split(',',1)[0]+",0\n");
-  }
   function toggleDirectiveField()
   {
     
@@ -895,77 +893,74 @@
     var aNumberStr;
     if (is_directive_setted_values[myLineVar[0]] == undefined) {
       is_directive_setted_values[myLineVar[0]] = {};
-      console.log("reset of dictionary");
     }
     if ( is_directive_setted_values[myLineVar[0]][phrase_pointer] == undefined ) {
       aNumberStr = myLineVar[2];
       //TODO: aca sería deseable chequear que is_directive tiene el formato de numero.. y no fue leido mal del archivo
-      console.log('(if) - is_directive='+is_directive);
     } else {
       aNumberStr = is_directive_setted_values[myLineVar[0]][phrase_pointer];
-      console.log('(else) - is_directive='+is_directive);
     }
     var is_directive = ''+aNumberStr;
     
 
     if (is_directive == '0') {
       is_directive_setted_values[myLineVar[0]][phrase_pointer] = '1'
-      console.log("phrase set to 1 (directive)\n");
     } else if (is_directive == '1') {
       is_directive_setted_values[myLineVar[0]][phrase_pointer] = '3'
-      console.log("phrase set to 3 (comment-with-null)\n");
     } else if (is_directive == '2') {
       is_directive_setted_values[myLineVar[0]][phrase_pointer] = '0'
-      console.log("phrase set to 0 (non-directive)\n");
     } else if (is_directive == '3') {
       is_directive_setted_values[myLineVar[0]][phrase_pointer] = '2'
-      console.log("phrase set to 2 (revise-later)\n");
     } else {
       console.error("esto no deberia pasar, is_directive="+is_directive);
     }
-    localStorage.setItem(''+myLineVar[0], JSON.stringify(is_directive_setted_values[myLineVar[0]]));
+    myAddItemToLocalStorage(myLineVar[0], myLineVar[1], myLineVar[2]);
+
     updateText();
   }
 
   function populateDirectiveSettedValuesDictionary(){
-    for (key in localStorage) {
-      var s = JSON.parse(localStorage.getItem( key ));
+    var ids = JSON.parse( localStorage.getItem(_projectName) );
+    for (key in ids) {
+      var phrases = ids[key];
 
-      if (typeof(s) != 'object') {
+      if (typeof(phrases) != 'object') {
         console.info('myInfo! found element in localStorage that isnt an object - skipping it');
       } else {
         is_directive_setted_values[key] = {};
-        for (key_2 in s) {
-          is_directive_setted_values[key][key_2] = s[key_2];
+        for (key_2 in phrases) {
+          is_directive_setted_values[key][key_2] = phrases[key_2];
         }
       }
     }
     
   }
-  function eraseLocalStorage(){
-    
 
+
+  function eraseLocalStorage(){
     var ans = confirm('Are you sure?');
     if (ans) {
-      console.log('\n-------- localStorage before being erased: ---------');
-      for (key in localStorage){
-        console.log(key+':'+localStorage[key]);
+
+      var ids = JSON.parse( localStorage.getItem(_projectName) );
+
+      console.log('\n-------- localStorage for this project  before being erased: ---------');
+      for (key in ids){
+        console.log(key+':'+ids[key]);
       }
-      if (Object.keys(localStorage).length<1){
-        console.log('((( localStorage is empty )))');
+      if (Object.keys(ids).length<1){
+        console.log('((( localStorage for this project is empty )))');
       }
 
-      localStorage.clear();
+      localStorage.removeItem(_projectName);
       
-      console.log('\n\n-------- localStorage after being erased: ---------');
-      for (key in localStorage){
-        console.log(key+':'+localStorage[key]);
+      console.log('\n\n-------- localStorage for this project after being erased: ---------');
+      for (key in ids){
+        console.log(key+':'+ids[key]);
       }
-      if (Object.keys(localStorage).length<1){
-        console.log('((( localStorage is empty )))');
-      }  
+      if (Object.keys(ids).length<1){
+        console.log('((( localStorage for this project is empty )))');
+      }
     }
-    
   }
 
   function changeId(){
@@ -1089,6 +1084,9 @@
 
 
       $("#id_comment").val( str );
+      $("#id_comment_total").empty();
+      $("#id_comment_total").append( "/"+mysplit(lines[lines.length-2],',',2)[0] );
+
  
     }
     window.showSubId = function(str)
@@ -1117,10 +1115,10 @@
     }
     window.showJavaClass = function(str)
     {
-    	
+      
 
-    	$("#javaclass_comment").empty();
-    	$("#javaclass_comment").append(str)
+      $("#javaclass_comment").empty();
+      $("#javaclass_comment").append(str)
     }
 
     window.showLog = function(str)
@@ -1146,7 +1144,16 @@
         dataType: "json",
         success: function(data){
           console.info("success! returned from newProject.php");
-          $('#uploadsSuccessMsg').append(data); //this show a Log, on the body of the page, of what happened after de AJAX call
+
+          var success = data["success"];
+          var successMsg = data["successMsg"];
+          if (success == 0)
+          {
+            //TODO: make a progress bar
+          } else {
+            $('#uploadsSuccessMsg').append(successMsg);
+          }
+
           //TODO: llamar a subir el archivo
           //var csvfile = data["csvfile"];
           _projectName = projectName;
@@ -1163,6 +1170,7 @@
 
     window.folderBtn = function()
     {
+          console.info("folderBtn called");
       var fileInput = $('#folderNew')[0];
       var formdata = new FormData();
 
@@ -1170,6 +1178,7 @@
           formdata.append('folderPost[]',fileInput.files[i]);
           formdata.append('folderPostFullDirectory[]',fileInput.files[i].webkitRelativePath);
       }
+          console.info("folderBtn 2");
 
       $.ajax({
         url: "uploadFolder.php", //if url is not set, then we are sending data to this same file
@@ -1192,7 +1201,7 @@
 
           var projectName = data["projectName"];
           callNewProjectPHP(projectName);
-          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+"-export.csv"; //show project name in tooltip of ExportBtn
+          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+".csv"; //show project name in tooltip of ExportBtn
 
           var numUploadedFiles = data["uploadedFilesCount"]; //TODO: show this number somewhere on the webpage (maybe)
 
@@ -1209,6 +1218,7 @@
 
     window.uploadFilePHP = function()
     {
+      console.info("uploadFilePHP being called");
       // upload file to update server copy of that file (this is needed by some python scripts of the webpage running in the server)
       var formdata = new FormData();
       
@@ -1231,9 +1241,15 @@
             $('#uploadsSuccessMsg').append(successMsg);
           }
           var projectName = $('#file')[0].files[0].name;          
-          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+"-export.csv"; //show project name in tooltip of ExportBtn
+          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+".csv"; //show project name in tooltip of ExportBtn
 
           _projectName = projectName;
+
+          //Initialize localStorage for this project:
+          console.info(_projectName);
+          if (localStorage.getItem(_projectName) === null || localStorage.getItem(_projectName) === undefined) {
+            localStorage.setItem( _projectName,JSON.stringify( {} ) );  
+          }
         }
       });//END AJAX
 
@@ -1242,10 +1258,18 @@
 
     window.showComments = function(fileContents)
     {
+
+      //Initialize localStorage for this project:
+      console.info(_projectName);
+      if (localStorage.getItem(_projectName) === null || localStorage.getItem(_projectName) === undefined) {
+        localStorage.setItem( _projectName,JSON.stringify( {} ) );  
+      }
+
       // save lines to a global variable
-      var s_temp = 'dummy_line\n'+fileContents;
+      var s_temp = 'dummy_line_prettending_its_a_csv_header_row\n'+fileContents;
       lines = s_temp.split('\n');
       calculateCurrentLinesSubset();
+      populateDirectiveSettedValuesDictionary(); //call before anything this time, otherwise colors arent shown the first time.
       updateText();
       updateId();
       updateSubId();
@@ -1277,11 +1301,11 @@
 
 
 
-	$("#id_comment").keyup(function(event){
-	    if(event.keyCode == 13){
-	        $("#go_to_id_button").click();
-	    }
-	});
+  $("#id_comment").keyup(function(event){
+      if(event.keyCode == 13){
+          $("#go_to_id_button").click();
+      }
+  });
 
 
   });
@@ -1315,7 +1339,7 @@
           var link_download = $("#my_link_for_export_project")[0];
 
           link_download.download = _projectName+".csv";
-          link_download.href = "projects/"+_projectName+"/CHi-files/project.csv";
+          link_download.href = "projects/"+_projectName+"/CHi-files/project-export.csv";
           link_download.click();
 
 
@@ -1345,10 +1369,32 @@
 
 
 
+  // sets the class of sub_id to value in the corresponding id, in the localStorage of the current project
+  function myAddItemToLocalStorage(id, sub_id, value) {
+    var ids = JSON.parse( localStorage.getItem(_projectName) );
+
+    if (ids === undefined || ids === null){
+      console.error("problem getting info from localStorage: projectName is not saved in the server");
+    }
+
+    console.info(ids);
+
+    if (ids[id] === undefined){
+      ids[id] = {};
+    }
+    ids[id][sub_id] = value;
+
+    localStorage.setItem( _projectName,JSON.stringify( ids) );
+
+  }
+
+  // gets the class of sub_id to value in the corresponding id, in the localStorage of the current project
+  function myGetItemOfLocalStorage(id, sub_id) {
+      var ret = JSON.parse( localStorage.getItem(_projectName) );
 
 
-
-
+      return ret;
+  }
 
 
 
@@ -1361,7 +1407,7 @@
 
       if (maxSplit==undefined)
       {
-      	maxSplit=aStringCpy.length-1;
+        maxSplit=aStringCpy.length-1;
       }
       for (var n=0; n<=maxSplit; n++) {
           aStringCpy = aStringCpy.slice(j+1)
@@ -1447,31 +1493,16 @@
         $("#outText").append( localStorage2ExportString() );
         $('#outText').show();
         outHidden = false;
-		$("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-up').removeClass('glyphicon-collapse-down');
+        $("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-up').removeClass('glyphicon-collapse-down');
+        $("#ShowHideModificationsLabel").empty();
+        $("#ShowHideModificationsLabel").append("Hide Modifications");
       } else {
         $('#outText').hide();
         outHidden = true;
-		$("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-down').removeClass('glyphicon-collapse-up');
+        $("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-down').removeClass('glyphicon-collapse-up');
+        $("#ShowHideModificationsLabel").empty();
+        $("#ShowHideModificationsLabel").append("Show Modifications");
       }
-  }
-
-  function increase_brightness(hex, percent){
-      // strip the leading # if it's there
-      hex = hex.replace(/^\s*#|\s*$/g, '');
-
-      // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
-      if(hex.length == 3){
-          hex = hex.replace(/(.)/g, '$1$1');
-      }
-
-      var r = parseInt(hex.substr(0, 2), 16),
-          g = parseInt(hex.substr(2, 2), 16),
-          b = parseInt(hex.substr(4, 2), 16);
-
-      return '#' +
-         ((0|(1<<8) + r + (256 - r) * percent / 100).toString(16)).substr(1) +
-         ((0|(1<<8) + g + (256 - g) * percent / 100).toString(16)).substr(1) +
-         ((0|(1<<8) + b + (256 - b) * percent / 100).toString(16)).substr(1);
   }
 
 
