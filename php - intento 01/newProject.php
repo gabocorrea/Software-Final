@@ -35,7 +35,11 @@ $result = array();
 ChromePhp::log("4");
 
 exec('slocc.sh -findopt "-name *.java" -raw -dest_dir "'.$dirOutputFiles.'" -comment "'.$dirInputFiles.'"',$result, $statusreturn);
-// showExecOut($result,$statusreturn);
+if ($statusreturn!=0){
+  $ret["success"] = 1;
+  $ret["successMsg"] = "Failed to extract comments from java files";
+}
+//showExecOut($result,$statusreturn);
 unset($result);
 $result = array();
 
@@ -43,17 +47,20 @@ ChromePhp::log("5");
 
 
 //If folders haven't been created, create them 
-if (!file_exists(dirname('./'.$dirInputFiles.'/'.$CHiFolderName.'/project.csv')))
+if (!file_exists(dirname('./'.$dirInputFiles.'/'.$CHiFolderName.'/'.$projectName.'.chi')))
 {               
-  mkdir(dirname('./'.$dirInputFiles.'/'.$CHiFolderName.'/project.csv'), 0777, true); //param true makes it recursive
+  mkdir(dirname('./'.$dirInputFiles.'/'.$CHiFolderName.'/'.$projectName.'.chi'), 0777, true); //param true makes it recursive
 }
 ChromePhp::log("6");
-exec('python ./python/1_convert-comments-in-many-files-to-one-csv___separated_by_phrases.py -m 4 -c NONE '.$dirOutputFiles.'/projects/'.$projectName.' ./'.$dirInputFiles.'/'.$CHiFolderName.'/project.csv',$result, $statusreturn);
-// showExecOut($result,$statusreturn);
+exec('python ./python/1_convert-comments-in-many-files-to-one-csv___separated_by_phrases.py -m 4 -c NONE '.$dirOutputFiles.'/projects/'.$projectName.' ./'.$dirInputFiles.'/'.$CHiFolderName.'/'.$projectName.'.chi',$result, $statusreturn);
+if ($statusreturn!=0){
+  $ret["success"] = 2;
+  $ret["successMsg"] = "Failed to create project";
+}
+//showExecOut($result,$statusreturn);
 unset($result);
 $result = array();
 ChromePhp::log("7");
-showExecOut($result,$statusreturn);
 ChromePhp::log("8");
 
 
@@ -99,7 +106,7 @@ function showExecOut($result,$statusreturn)
     ChromePhp::log( ' (not an array) --- --- ---');
   }
   
-  ChromePhp::log( '');
+  ChromePhp::log( ''); 
 }
 
 

@@ -160,23 +160,18 @@ def getJavadocCommentsListFromFile(filepath):
 
 
 
-with open('python/python-log22.txt','w') as pythonLog22:
-	with open('python/python-log.txt','w') as pythonLog:
+dictOfComments = collections.OrderedDict() # a dictionary that contain lists of comments. each list corresponds to a file
+for root, dirs, files in os.walk(usrinput['in'], topdown=True):
+	for name in files:
+		root = root.replace('\\','/')
+		path = root+'/'+name
+		modified_path_key = path.split("/",maxsplit=2)[2]
 
-		dictOfComments = collections.OrderedDict() # a dictionary that contain lists of comments. each list corresponds to a file
-		for root, dirs, files in os.walk(usrinput['in'], topdown=True):
-			for name in files:
-				root = root.replace('\\','/')
-				path = root+'/'+name
-				modified_path_key = path.split("/",maxsplit=2)[2]
-
-				
-				try:
-					dictOfComments[modified_path_key] = getJavadocCommentsListFromFile( path )
-					pythonLog22.write(path+'\n'+str(os.stat(path))+'\n')
-				except Exception as e:
-					pythonLog.write('\n'+path+'\n'+str(os.stat(path))+'\n')
-					pythonLog.write(str(e))
+		
+		try:
+			dictOfComments[modified_path_key] = getJavadocCommentsListFromFile( path )
+		except Exception as e:
+			pass
 
 
 

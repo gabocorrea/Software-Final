@@ -23,18 +23,18 @@
       var listener = new window.keypress.Listener();
       //listener.simple_combo({"keys":"space","prevent_default":true,}, toggleDirectiveField);
       listener.simple_combo("space", function() {toggleDirectiveField();});
-      listener.simple_combo("up", function() {previousPhrase(); updateMyLogger();});
-      listener.simple_combo("down", function() {nextPhrase(); updateMyLogger();});
-      listener.simple_combo("right", function() {nextComment(); updateMyLogger();});
-      listener.simple_combo("left", function() {previousComment('start'); updateMyLogger();});
-      listener.simple_combo("i", function() {previousPhrase(); updateMyLogger();});
-      listener.simple_combo("k", function() {nextPhrase(); updateMyLogger();});
-      listener.simple_combo("l", function() {nextComment(); updateMyLogger();});
-      listener.simple_combo("j", function() {previousComment('start'); updateMyLogger();});
-      listener.simple_combo("w", function() {previousPhrase(); updateMyLogger();});
-      listener.simple_combo("s", function() {nextPhrase(); updateMyLogger();});
-      listener.simple_combo("d", function() {nextComment(); updateMyLogger();});
-      listener.simple_combo("a", function() {previousComment('start'); updateMyLogger();});
+      listener.simple_combo("up", function() {previousPhrase();});
+      listener.simple_combo("down", function() {nextPhrase();});
+      listener.simple_combo("right", function() {nextComment();});
+      listener.simple_combo("left", function() {previousComment('start');});
+      listener.simple_combo("i", function() {previousPhrase();});
+      listener.simple_combo("k", function() {nextPhrase();});
+      listener.simple_combo("l", function() {nextComment();});
+      listener.simple_combo("j", function() {previousComment('start');});
+      listener.simple_combo("w", function() {previousPhrase();});
+      listener.simple_combo("s", function() {nextPhrase();});
+      listener.simple_combo("d", function() {nextComment();});
+      listener.simple_combo("a", function() {previousComment('start');});
       $('#file').on('fileselect', function(event, numFiles, label) {
         $('#file_name').val(label);
       });
@@ -100,7 +100,7 @@
 </head>
 <body>
 
-  <div id="CompatibilityMsg" style="visibility:hidden;" class="alert alert-danger" role="alert">
+  <div id="CompatibilityMsg" style="display:none;" class="alert alert-danger" role="alert">
     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
     <span class="sr-only">Error:</span>
     Please use a browser that supports LocalStorage.
@@ -158,12 +158,33 @@
     <a id="my_link_for_export_project" style="display:none;"></a>
 
 
-
+<!-- 
     <div class="row">
       <div id="uploadsSuccessMsg" class="col-sm-11 text-center">
       </div>
+    </div> -->
+    <div id="ajaxCallbackUploadFolder" style="display:none;" class="row col-sm-11 alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
     </div>
-
+    <div id="ajaxCallbackUploadFile" style="display:none;" class="row col-sm-11 alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+    </div>
+    <div id="ajaxCallbackNewProject" style="display:none;" class="row col-sm-11 alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+    </div>
+    <div id="ajaxCallbackExportProject" style="display:none;" class="row col-sm-11 alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+    </div>
+    <div id="alertThatProjectHasSavedDataInLocalStorage" style="display:none;" class="row col-sm-11 alert alert-info">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Info:</span>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+      Previous modifications made to this project have been detected and loaded.
+    </div>
 
 
   </div>
@@ -193,7 +214,7 @@
 
 
 
-    <div id="buttons_and_comments" class="container center-block">
+    <div id="buttons_and_comments" class="container center-block" style="display:none">
 
       <div class="container-fluid">
       <div class="row">
@@ -303,16 +324,15 @@
         <div class="col-xs-1" style="padding-left:1;font-weight:bold;">
             <input id="id_comment" style="width:140%" onchange="changeId();">
         </div>
-<!--         <div class="col-xs-1">
-          <button type="button" id="go_to_id_button" class="btn btn-default" onclick="changeId();" style="padding-bottom:3px; padding-top:2px" data-toggle="tooltip" data-placement="bottom" title="(or just press Enter)">
-                  go
-          </button>
-        </div> -->
         <div class="col-xs-1" style="padding-bottom:3px; padding-top:2px; padding-left:0px">
           <label id="id_comment_total">/maxID</label>
         </div>
         <div class="col-xs-2 text-left">
           <label id="sub_id_comment" style="padding-bottom:3px; padding-top:2px; padding-left:0px">Phrase </label>
+        </div>
+        <div class="col-xs-2">
+        <div class="col-xs-3">
+        </div>
         </div>
       </div>
 
@@ -342,23 +362,10 @@
 
 
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-2 text-right">
-          <label style="margin-top:5px">Type of Comment</label>
-        </div>
-        <div class="col-xs-2 left-align">
-            <h5 id="type_comment" class="">_</h5>
-        </div>
-        <div class="col-xs-7">
-        </div>
-        <div class="col-xs-1">
-        </div>
-      </div>
-
 
       <div class="row">
         <div class="col-xs-2 text-right" >
-          <label style="margin-top:5px">Class</label>
+          <label style="margin-top:5px">Java Class</label>
         </div>
         <div class="col-xs-6">
           <h5 id="javaclass_comment" class="">_</h5>
@@ -427,12 +434,16 @@
         </button>
     </div>
       <div class="col-sm-3">
-        <button id="ExportBtn" type="button" class="btn btn-default btn-sm btn-block" onclick="exportProject();" data-toggle="tooltip" data-placement="top" title="Export modifications to <Project Name>.csv">
+        <button type="button" class="btn btn-default btn-sm btn-block" onclick="exportProject();" data-toggle="tooltip" data-placement="top" title="Save your modifications by downloading your project">
           <span id="exportButtonIcon" class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-          Save/Export Project
+          Save Project
         </button>
       </div>
       <div class="col-sm-3">
+        <button type="button" class="btn btn-default btn-sm btn-block" onclick="wekaExport();" data-toggle="tooltip" data-placement="top" title="Download a file that can be used in Weka for Text Mining">
+          <span id="exportButtonIcon" class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+          Weka Export
+        </button>
       </div>
     <div class="col-sm-1">
         <button type="button" class="btn btn-danger btn-sm" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="All your project's modifications are forgotten">
@@ -535,8 +546,6 @@
   outHidden = true;
   $("#outText").hide();
 
-  $('#buttons_and_comments').hide();
-
 // Global Variables:
   var debug = false;
   var commentsDict = [];
@@ -544,7 +553,7 @@
   var lines_current_subset = [];
   //var phrases = [];
   var file = null;
-  var current_line_pointer = 2;
+  var current_line_pointer = 1;//a pointer to a line in the project file that is being read
   var phrase_pointer = 1;
   var previous_comment_lines_subset = undefined;
   var _projectName = undefined;
@@ -632,13 +641,12 @@
 
   function nextPhrase()
   {
-    
-    if (phrase_pointer<lines_current_subset.length-1) {
+    console.log("nextPhrase");
+    if (phrase_pointer<lines_current_subset.length) {
       phrase_pointer += 1;
       updateText();
       updateId();
       updateSubId();
-      updateType();
       updatePath();
       updateJavaClass();
     } else {
@@ -653,7 +661,6 @@
       updateText();
       updateId();
       updateSubId();
-      updateType();
       updatePath();
       updateJavaClass();
     } else{
@@ -663,15 +670,14 @@
 
   function nextComment()
   {
-      
+    console.log("nextComment");
     if (current_line_pointer<lines.length-1) {
-      current_line_pointer += lines_current_subset.length-1; //-1 because remmember there is a dummy line.
+      current_line_pointer += lines_current_subset.length;
       calculateCurrentLinesSubset();
       phrase_pointer = 1;
       updateText();
       updateId();
       updateSubId();
-      updateType();
       updatePath();
       updateJavaClass();
     }
@@ -682,7 +688,7 @@
     offset = typeof(offset) !== 'undefined' ? offset : 'start';
 
     
-    if (current_line_pointer>2) {
+    if (current_line_pointer>=2) {
       
       prevSubset = getPreviousLinesSubset();
       current_line_pointer -= prevSubset.length;
@@ -690,26 +696,28 @@
       if (offset=='start') {
         phrase_pointer=1;
       } else if (offset == 'end') {
-        phrase_pointer=lines_current_subset.length-1; //-1 because remmember there is a dummy line.
+        console.log("previousComment 001")
+        phrase_pointer=lines_current_subset.length;
       } else {
         alert('myError: called previousComment() function with an incorrect parameter');
       }
       updateText();
       updateId();
       updateSubId();
-      updateType();
       updatePath();
       updateJavaClass();
     }
   }
+
+  // Agrega las frases del comentario actual (id actual) a un arreglo global.
   function calculateCurrentLinesSubset()
   {
+    console.log("calculateCurrentLinesSubset");
     var current_line_pointer_cpy = current_line_pointer;
 
     lines_current_subset=[];
-    lines_current_subset.push(lines[current_line_pointer_cpy]); //dummy line. Long ago, cvs input files started from sub-id==0. Now, to patch that we add this dummy line
 
-    for (var i=1;i<200;i++) { //maximo examinar max 200 lineas para que no exista un loop infinito
+    for (var i=1;i<5000;i++) { //maximo examinar max 5000 lineas (ojo: hay un break adentro del loop) para que no exista un loop infinito (se asume que un comentario no tiene tantas frases)
       if (current_line_pointer_cpy>=lines.length) {
         break;
       }
@@ -722,7 +730,7 @@
       lines_current_subset.push(lines[current_line_pointer_cpy]);
       current_line_pointer_cpy++;
     }
-
+    console.log("calculateCurrentLinesSubset end");
   }
 
   function getPreviousLinesSubset()
@@ -730,10 +738,10 @@
     var current_line_pointer_cpy = current_line_pointer;
     previous_comment_lines_subset = [];
     
-    for (var i=1; i<200;i++) { //maximo examinar 200 lineas por si llega a haber un loop infinito
-      if (current_line_pointer_cpy<=2) {
+    for (var i=1; i<5000;i++) { //maximo examinar 5000 lineas (ojo: hay un break adentro del loop) por si llega a haber un loop infinito
+      if (current_line_pointer_cpy<=1) {
         if ( i==1 ) {
-          console.log('cant go to previous comment because this one is the first one.');
+          console.info('cant go to previous comment because this one is the first one.');
         } else {
           
         }
@@ -755,27 +763,23 @@
 
   function updateId()
   {
-    var line = mysplit(lines_current_subset[phrase_pointer],',',2);
+    var line = mysplit(lines_current_subset[phrase_pointer-1],',',2);
     showId(line[0]);
   }
   function updateSubId()
   {
-    var line = mysplit(lines_current_subset[phrase_pointer],',',2);
+    var line = mysplit(lines_current_subset[phrase_pointer-1],',',2);
     showSubId(line[1]);
-  }
-  function updateType()
-  {
-    var line = mysplit(lines_current_subset[phrase_pointer],',',4);
-    showType(line[3]);
   }
   function updatePath()
   {
-    var line = mysplit(lines_current_subset[phrase_pointer],',',5);
+    var line = mysplit(lines_current_subset[phrase_pointer-1],',',5);
     showPath(line[4]);
   }
   function updateJavaClass()
   {
-    var line = mysplit(lines_current_subset[phrase_pointer],',',5);
+    console.log("updateJavaClass");
+    var line = mysplit(lines_current_subset[phrase_pointer-1],',',5);
     var path = line[4];
 
     // Check if string starts with ./ or ../ or .\ or ..\     if that is the case, ommit those chars and work with the rest of the string
@@ -803,31 +807,32 @@
     }
     var s = split[split.length-1];
     showJavaClass(s);
+    console.log("updateJavaClass end");
   }
 
 
   function updateText()
   {
+    console.log("updateText()");
     var comment = '';
 
     
     selected_phrase_dict = {};
-    for (var i=1;i<lines_current_subset.length; i++){
-      myLineVar = mysplit(lines_current_subset[i],',',3);
-      var splitted_line = mysplit(lines_current_subset[i],',',5);
+    for (var i=1;i<=lines_current_subset.length; i++){
+      var splitted_line = mysplit(lines_current_subset[i-1],',',5);
+      var lineId = splitted_line[0];
+      var lineSubId = splitted_line[1];
+      var lineClass = splitted_line[2];
+      var lineType = splitted_line[3];
+      var linePath = splitted_line[4];
+      var lineText = splitted_line[5];
 
-      ss = '';
       is_directive = undefined;
-      //: Si existe ha sido modificado, usar ese color. Si no, buscar color en las lineas del archivo
-      if(is_directive_setted_values[myLineVar[0]] != undefined && is_directive_setted_values[myLineVar[0]][i] != undefined){
-          is_directive = is_directive_setted_values[myLineVar[0]][i];
-          ss='if';
+      //: Si ya ha sido modificado, entonces usar ese color. Si no, buscar color en las lineas del archivo
+      if(is_directive_setted_values[lineId] != undefined && is_directive_setted_values[lineId][i] != undefined){
+          is_directive = is_directive_setted_values[lineId][i];
       } else {
-        is_directive = splitted_line[2];
-        ss = 'else';
-      }
-      if (i==phrase_pointer) {
-        //console.log('\n**is_directive('+ss+')='+is_directive+'\n');
+        is_directive = lineClass;
       }
 
       if (i==phrase_pointer){
@@ -838,57 +843,39 @@
 
 
       // take substring from the first " to the last "
-      var phrase = splitted_line[5];
-      var start = phrase.indexOf('"');
+      var start = lineText.indexOf('"');
       if (start==-1){
         start = 0;
       }
-      var end = phrase.lastIndexOf('"');
+      var end = lineText.lastIndexOf('"');
       if (end==-1){
-        end = prase.length;
+        end = lineText.length;
       }
-      phrase = splitted_line[5].substring(start+1,end);
+      lineText = lineText.substring(start+1,end);
 
       if (is_directive == '0') {
-        comment += '<span class="inline bg-gris'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
+        comment += '<span class="inline bg-gris'+selected_phrase_dict[''+i]+'">'+lineText+'</span>';
       } else if (is_directive == '1') {
-        comment += '<span class="inline bg-amarillo'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
+        comment += '<span class="inline bg-amarillo'+selected_phrase_dict[''+i]+'">'+lineText+'</span>';
       } else if (is_directive == '2') {
-        comment += '<span class="inline bg-azul'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
+        comment += '<span class="inline bg-azul'+selected_phrase_dict[''+i]+'">'+lineText+'</span>';
       } else if (is_directive == '3') {
-        comment += '<span class="inline bg-naranjo'+selected_phrase_dict[''+i]+'">'+phrase+'</span>';
+        comment += '<span class="inline bg-naranjo'+selected_phrase_dict[''+i]+'">'+lineText+'</span>';
       } else {
-        console.error('myError: se leyó una directiva distinta a {0,1,2}');
+        console.error('myError: se leyó una clase de comentario con numero '+is_directive+' el cual no existe');
         return;
-      }
-      if (i!=phrase_pointer) {
-       
-        
       }
 
     }
     showText(comment);
-  }
-  function updateMyLogger()
-  {
-    if (debug) {
-      $('#mylogger').show();
-      var s = '';
-      s += 'current line pointer:'+current_line_pointer;
-      s += '<br>phrase pointer:'+phrase_pointer;
-      s += '<br>length of current subset of lines:'+lines_current_subset.length;
-      showLog(s);
-    } else {
-      $('#mylogger').hide();
-    }
+
+    console.log("updateText() end");
   }
 
 
   function toggleDirectiveField()
   {
-    
-
-    myLineVar = mysplit(lines[current_line_pointer+phrase_pointer],',',3);
+    myLineVar = mysplit(lines[current_line_pointer+phrase_pointer-1],',',3);
 
     var aNumberStr;
     if (is_directive_setted_values[myLineVar[0]] == undefined) {
@@ -914,7 +901,7 @@
     } else {
       console.error("esto no deberia pasar, is_directive="+is_directive);
     }
-    myAddItemToLocalStorage(myLineVar[0], myLineVar[1], myLineVar[2]);
+    myAddItemToLocalStorage(myLineVar[0], phrase_pointer, is_directive_setted_values[myLineVar[0]][phrase_pointer]);
 
     updateText();
   }
@@ -938,7 +925,7 @@
 
 
   function eraseLocalStorage(){
-    var ans = confirm('Are you sure?');
+    var ans = confirm('Are you sure you want to erase the modifications done to the project '+_projectName+'?');
     if (ans) {
 
       var ids = JSON.parse( localStorage.getItem(_projectName) );
@@ -967,16 +954,15 @@
     
 
     theValue = $('#id_comment').val();
-    splittedArray = mysplit(theValue,'-',1);
-
-    idMain = splittedArray[0];
     
-    idMain_int = parseInt(idMain);
+    idMain_int = parseInt(theValue);
     if (!isNaN(idMain_int)) {
 
       if (idMain_int>0 && idMain_int<lines.length-1) {
-        
-        if ( parseInt(mysplit(lines[current_line_pointer],',',1)[0]) <=idMain_int) {
+        if ( parseInt(mysplit(lines[current_line_pointer],',',1)[0]) == idMain_int ) {
+          //do nothing, same id entered as the current id
+        }
+        else if ( parseInt(mysplit(lines[current_line_pointer],',',1)[0]) < idMain_int) {
           
           for (var i=current_line_pointer; i<lines.length-1;i++) {
 
@@ -988,7 +974,6 @@
               return;
             } //else:
             if (id_int==idMain_int) {
-              console.log('el idMain fue encontrado');
               current_line_pointer = i;
               break;
             }
@@ -1006,7 +991,6 @@
             if (id_int==idMain_int) {
               lastId = undefined;
               stop = undefined;
-              console.log('el idMain fue encontrado');
               for (var j=i; j>1;j--){
                 console.log(j);
                 id = mysplit(lines[j],',',1)[0];
@@ -1024,23 +1008,20 @@
             
           }
         }
-        console.log('loop finished_________');
         calculateCurrentLinesSubset();
         phrase_pointer = 1;
         updateText();
         updateId();
         updateSubId();
-        updateType();
         updatePath();
         updateJavaClass();
-        updateMyLogger();
 
 
-      } else {
-        console.log('!   id entered is out of range   !');
+      } else { // else, if number is not in a valid range
+        console.log('!   id entered is out of range. do nothing   !');
       }
-    } else {
-      console.log('!   invalid id entered   !');
+    } else { //else, if id value entered by user is not a number
+      console.log('!   invalid id entered. do nothing   !');
       return;
     }
   }
@@ -1097,14 +1078,6 @@
       $("#sub_id_comment").append( "Phrase "+str );
  
     }
-    window.showType = function(str)
-    {
-      
-
-      $("#type_comment").empty();
-      $("#type_comment").append( str );
- 
-    }
     window.showPath = function(str)
     {
       
@@ -1132,7 +1105,6 @@
     {
       var formdata = new FormData();
 
-      formdata.append('exportString',localStorage2ExportString());
       formdata.append('projectName',projectName);
 
       $.ajax({
@@ -1147,20 +1119,18 @@
 
           var success = data["success"];
           var successMsg = data["successMsg"];
-          if (success == 0)
-          {
-            //TODO: make a progress bar
-          } else {
-            $('#uploadsSuccessMsg').append(successMsg);
+          if (success != 0){
+            console.error("ajaxCallbackNewProject should show an error");
+            $('#ajaxCallbackNewProject').append(successMsg);
+            document.getElementById('ajaxCallbackNewProject').style.display = "";
           }
 
           //TODO: llamar a subir el archivo
-          //var csvfile = data["csvfile"];
-          _projectName = projectName;
+          //var csvfile = data["csvfile"];          
 
 
           // open file to show comments in the webpage
-          var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/project.csv", function() {
+          var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
             showComments(fileToOpen.responseText);
           });
           
@@ -1191,17 +1161,14 @@
           console.info("success! returned from uploadFolder.php");
           var success = data["success"];
           var successMsg = data["successMsg"];
-          if (success == 0)
-          {
-            //TODO: make a progress bar
-          } else {
-            $('#uploadsSuccessMsg').append(successMsg);
+          if (success != 0){
+            $('#ajaxCallbackUploadFolder').append(successMsg);
+            document.getElementById('ajaxCallbackUploadFolder').style.display = "";
           }
           
 
-          var projectName = data["projectName"];
-          callNewProjectPHP(projectName);
-          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+".csv"; //show project name in tooltip of ExportBtn
+          _projectName = data["projectName"];//returns the name of the uploaded folder
+          callNewProjectPHP(_projectName);
 
           var numUploadedFiles = data["uploadedFilesCount"]; //TODO: show this number somewhere on the webpage (maybe)
 
@@ -1216,12 +1183,11 @@
 
 
 
-    window.uploadFilePHP = function()
+    window.uploadFilePHP = function(aFile)
     {
-      console.info("uploadFilePHP being called");
       // upload file to update server copy of that file (this is needed by some python scripts of the webpage running in the server)
       var formdata = new FormData();
-      
+      formdata.append('fileUploaded',aFile);
 
       $.ajax({
         url: "uploadFile.php", //if url is not set, then we are sending data to this same file
@@ -1234,22 +1200,18 @@
           console.info("success! returned from uploadFile.php");
           var success = data["success"];
           var successMsg = data["successMsg"];
-          if (success == 0)
-          {
-            //TODO: make a progress bar
-          } else {
-            $('#uploadsSuccessMsg').append(successMsg);
+          if (success != 0){
+            $('#ajaxCallbackUploadFile').append(successMsg);
+            document.getElementById('ajaxCallbackUploadFile').style.display = "";
           }
-          var projectName = $('#file')[0].files[0].name;          
-          $("#ExportBtn")[0].attributes["data-original-title"].nodeValue = "Export modifications to "+projectName+".csv"; //show project name in tooltip of ExportBtn
 
-          _projectName = projectName;
+          
+          // this code was moved to openProjectFromFile(). It's not necessary to upload the file because we work with localstorage of this project.
+          // // open file to show comments in the webpage
+          // var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
+          //   showComments(fileToOpen.responseText);
+          // });
 
-          //Initialize localStorage for this project:
-          console.info(_projectName);
-          if (localStorage.getItem(_projectName) === null || localStorage.getItem(_projectName) === undefined) {
-            localStorage.setItem( _projectName,JSON.stringify( {} ) );  
-          }
         }
       });//END AJAX
 
@@ -1260,34 +1222,38 @@
     {
 
       //Initialize localStorage for this project:
-      console.info(_projectName);
       if (localStorage.getItem(_projectName) === null || localStorage.getItem(_projectName) === undefined) {
         localStorage.setItem( _projectName,JSON.stringify( {} ) );  
+      } else {
+        document.getElementById('alertThatProjectHasSavedDataInLocalStorage').style.display = "";
       }
 
       // save lines to a global variable
-      var s_temp = 'dummy_line_prettending_its_a_csv_header_row\n'+fileContents;
+      var s_temp = fileContents;
       lines = s_temp.split('\n');
       calculateCurrentLinesSubset();
       populateDirectiveSettedValuesDictionary(); //call before anything this time, otherwise colors arent shown the first time.
       updateText();
       updateId();
       updateSubId();
-      updateType();
       updatePath();
       updateJavaClass();
-      updateMyLogger();
       populateDirectiveSettedValuesDictionary();
 
-      $('#buttons_and_comments').show();
+      document.getElementById('buttons_and_comments').style.display = "";
     }
 
     window.openProjectFromFile = function(aFile)
     {
+      _projectName = aFile.name.split('.')[0];
       var reader = new FileReader();
       reader.onload = function(progressEvent){
-        uploadFilePHP();
-        showComments( this.result );
+        //uploadFilePHP(aFile); //this is old code. left just in case for a while
+        showComments(this.result);
+        // // open file to show comments in the webpage  //this is old code. left just in case fow a while
+        // var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
+        //   showComments(fileToOpen.responseText);
+        // });
       };
       reader.readAsText(aFile);
     }
@@ -1303,7 +1269,7 @@
 
   $("#id_comment").keyup(function(event){
       if(event.keyCode == 13){
-          $("#go_to_id_button").click();
+          changeId();
       }
   });
 
@@ -1325,21 +1291,26 @@
       }
 
       $.ajax({
-        url: "export.php",
+        url: "exportProject.php",
         data: formdata,
         contentType: false,
         processData: false,
         type: "POST",
         dataType: "json",
         success: function(data){
-          console.info("success! returned from export.php");
-          //$('#TODO').append(data); //this show a Log, on the body of the page, of what happened after de AJAX call
-          //var csvfile = data["csvfile"];
+          console.info("success! returned from exportProject.php");
+
+          var success = data["success"];
+          var successMsg = data["successMsg"];
+          if (success != 0){
+            $('#ajaxCallbackExportProject').append(successMsg);
+            document.getElementById('ajaxCallbackExportProject').style.display = "";
+          }
           
           var link_download = $("#my_link_for_export_project")[0];
 
-          link_download.download = _projectName+".csv";
-          link_download.href = "projects/"+_projectName+"/CHi-files/project-export.csv";
+          link_download.download = _projectName+".chi";
+          link_download.href = "projects/"+_projectName+"/CHi-files/"+_projectName+"-export.csv";
           link_download.click();
 
 
@@ -1382,19 +1353,16 @@
     if (ids[id] === undefined){
       ids[id] = {};
     }
+    console.log(ids[id][sub_id]);
     ids[id][sub_id] = value;
+    console.log(ids[id][sub_id]);
+    console.log("value:"+value);
 
+    console.info(JSON.stringify( ids));
     localStorage.setItem( _projectName,JSON.stringify( ids) );
 
   }
 
-  // gets the class of sub_id to value in the corresponding id, in the localStorage of the current project
-  function myGetItemOfLocalStorage(id, sub_id) {
-      var ret = JSON.parse( localStorage.getItem(_projectName) );
-
-
-      return ret;
-  }
 
 
 
@@ -1429,58 +1397,29 @@
 
 
 
-  function help(){
-    console.log("______________\nhelp:\n\n"
-      +"mydebug() : fixes the button Toggle Export Data (it may stop working because of an internal error with the localStorage\n");
-  }
-  function mydebug(){fixToggleExportData();}
-  //fixes the InternalDataElementWasNotAnObject error seen in console sometimes
-  function fixToggleExportData(){
-    myflag=true;
-    
-    for (key in localStorage){
-      if (typeof(localStorage[key]) != 'string') {
-        console.error("myError: localStorage["+key+"] has type "+ typeof(localStorage[key]));
-        myflag = false;
-
-      }
-      
-      try{
-        myobj=JSON.parse(localStorage[key]);
-      } catch(err) {
-        console.log(err.message+" (at "+key+") ... (deleting key)");
-        localStorage.removeItem(key);
-      }
-    }
-    if (myflag){
-      console.log("myMsg: no errors found in localStorage");
-    }
-  }
 
   function localStorage2ExportString(){
     ret = 'id,id_sub,is_directive\n';
+
     if (Object.keys(localStorage).length>0) {
-      for (key in localStorage){
-        try{
-          obj = JSON.parse(localStorage[key]);
-        } catch(err){
-          console.error("catched error: "+err.message);
-          console.error("myError: JSON.parse tried to parse: "+localStorage[key]);
-        }
-        
-        if (typeof(obj) != 'object') {
-          console.info("myInfo: an internal data element was not an object -> localStorage["+key+"]=="+localStorage[key]);
-        }
-        else {
-          s='';
-          for (key_2 in obj) {
-            s += key+','+key_2+','+obj[key_2] + '\n';
+      thisProjectDictionary = JSON.parse( localStorage.getItem(_projectName) );
+      if (thisProjectDictionary === undefined || thisProjectDictionary === null) {
+        console.error("problem getting info from localStorage: projectName is not saved in the server");
+      } else {
+        for (key in thisProjectDictionary){
+          
+          if (typeof(thisProjectDictionary) != 'object') {
+            console.error("myInfo: an internal data element was not an object -> localStorage["+key+"]=="+localStorage[key]);
           }
-          ret += s;
+          else {
+            s='';
+            for (key_2 in thisProjectDictionary[key]) {
+              s += key+','+key_2+','+thisProjectDictionary[key][key_2] + '\n';
+            }
+            ret += s;
+          }
         }
       }
-    } else {
-      ret = 'No modifications yet';
     }
     return ret;
   }

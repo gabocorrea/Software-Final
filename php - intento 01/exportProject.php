@@ -17,16 +17,19 @@ $result = array();
 $statusreturn = -2112;
 
 $ret = array();
-$ret['success'] = 1;
-$ret['successMsg'] = "Success exporting file";
+$ret['success'] = 0;
+$ret['successMsg'] = "Success saving modifications";
 
 // ChromePhp::log( 'exporting web modifications');
-file_put_contents($userModificationsPath, $_POST['exportString']); //TODO: cambiar nombre y directorio de out_web.csv
-exec('python ./python/2_process_web_output.py projects/'.$projectName.'/CHi-files/project.csv '.$userModificationsPath,$result, $statusreturn);
+file_put_contents($userModificationsPath, $_POST['exportString']);
+exec('python ./python/2_process_web_output.py projects/'.$projectName.'/CHi-files/'.$projectName.'.chi '.$userModificationsPath,$result, $statusreturn);
+if ($statusreturn!=0){
+  $ret["success"] = 1;
+  $ret["successMsg"] = "Failed to save modifications";
+}
 showExecOut($result,$statusreturn);
 unset($result);
 $result = array();
-// ChromePhp::info('python ./python/2_process_web_output.py projects/'.$projectName.'/CHi-files/project.csv '.$userModificationsPath);
 
 // ChromePhp::log( 'done');
 
