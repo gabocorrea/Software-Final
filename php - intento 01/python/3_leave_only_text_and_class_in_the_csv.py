@@ -3,7 +3,7 @@
 	caracteres " fueron reemplazados por \" y que comment__class ahora corresponde a un string
 	(antes correspondia a un int)
 	"""
-import sys,re
+import sys,re,os
 
 def usage():
 	print("""
@@ -12,20 +12,28 @@ Usage:
 
 Description:
 	Lee como input un archivo .csv con header id,sub_id,comment__class,type,path,text.
-	El output es un archivo .csv con header text,comment__class
+	El output es un archivo .csv con header text,comment__class el cual es creado en la misma
+	carpeta del archivo de input
 
 Examples:
 	python 3_leave_only_text_and_class_in_the_csv.py in.csv
 
 		""")
 
+try:
+	filename_in_fullPath.index('/')
+	os_dir_separator = '/'
+except Exception:
+	os_dir_separator = '\\'
 
-
-filename_in=sys.argv[1]
-fdout = open(filename_in[:-4]+'_(only comments and class).csv','w')
+filename_in_fullPath = sys.argv[1]
+filename_in = os.path.basename(filename_in_fullPath) #saca el nombre con extension
+filename_out_fullPath = os.path.dirname(filename_in_fullPath)+os_dir_separator+filename_in[:-4]+'_(only comments and class).csv'
+filename_out = os.path.basename(filename_out_fullPath)
+fdout = open(filename_out_fullPath,'w')
 
 linesNotCorrectlyFormated = 0
-with open(filename_in) as fdin:
+with open(filename_in_fullPath) as fdin:
 	i=0
 	for line in fdin:
 		splitted = line.split(',',5)

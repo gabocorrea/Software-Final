@@ -1,7 +1,7 @@
 <?php
 /* uploadFile.php
  * 
- * Receives from post 1 file, which should be a .csv file representing a CHi project. After upload,
+ * Receives from post 1 file, which should be a .chi file representing a CHi project. After upload,
  * the file is moved (in the server) from it's temp folder to the corresponding project folder, creating
  * folders to that path if needed.
  */
@@ -13,9 +13,8 @@ include "C:\Program Files\chromePHP\ChromePhp.php";
 //error_reporting(E_ALL);
 $CHiFolderName = 'CHi-files';
 
-
 $fileName = $_FILES['fileUploaded']['name'];
-$fileName = basename($fileName,'.chi');
+$fileName = pathinfo($fileName)['filename'];
 
 $ret = array();
 $ret["success"] = 0;
@@ -27,18 +26,19 @@ if ($_FILES['fileUploaded']['error'] != 0)
 	$ret["successMsg"] = "unknown error uploading file";
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 	//If folders haven't been created, create them 
-	if (!file_exists(dirname('projects/'.$fileName.'/'.$CHiFolderName.'/project.csv')))
+	if (!file_exists(dirname('projects/'.$fileName.'/'.$CHiFolderName.'/'.$fileName.'.chi')))
 	{								
-		mkdir(dirname('projects/'.$fileName.'/'.$CHiFolderName.'/project.csv'), 0777, true); //param true makes it recursive
+		mkdir(dirname('projects/'.$fileName.'/'.$CHiFolderName.'/'.$fileName.'.chi'), 0777, true); //param true makes it recursive
 	}
 
 	// Check if folder exists, just in case
-	if (file_exists(dirname('projects/'.$fileName.'/'.$CHiFolderName.'/project.csv')))
+	if (file_exists(dirname('projects/'.$fileName.'/'.$CHiFolderName.'/'.$fileName.'.chi')))
 	{
-        if (move_uploaded_file($_FILES['fileUploaded']['tmp_name'], 'projects/'.$fileName.'/'.$CHiFolderName.'/project.csv')) {
+        if (move_uploaded_file($_FILES['fileUploaded']['tmp_name'], 'projects/'.$fileName.'/'.$CHiFolderName.'/'.$fileName.'.chi')) {
 
         } else {
 			$ret["success"] = 2;

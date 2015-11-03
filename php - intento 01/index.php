@@ -107,11 +107,14 @@
   </div>
 
 
-  <div class="container" style="margin-top: 11px;">
+  <div class="container" style="margin-top: 11px;" style="display:none;">
 
+  <div id="ProjectNameLabel" class="container center-block">
+    
 
+  </div>
 
-  <div class="container center-block">
+  <div id="upperButtonsContainer" class="container center-block text-center" >
     
     <div class="row" style="margin-bottom: 5px;" >
 
@@ -156,6 +159,7 @@
 
 
     <a id="my_link_for_export_project" style="display:none;"></a>
+    <a id="my_link_for_export_weka_file" style="display:none;"></a>
 
 
 <!-- 
@@ -176,6 +180,10 @@
       <span class="sr-only">Error:</span>
     </div>
     <div id="ajaxCallbackExportProject" style="display:none;" class="row col-sm-11 alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+    </div>
+    <div id="ajaxCallbackExportWekaFile" style="display:none;" class="row col-sm-11 alert alert-danger" role="alert">
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
       <span class="sr-only">Error:</span>
     </div>
@@ -228,7 +236,7 @@
         </div>
         <div class="col-xs-1">
         </div>
-        <div class="col-xs-1">
+        <div class="col-xs-1" style="padding:0 0 0 0">
            
           <button type="button" class="btn btn-default btn-block" onclick="previousPhrase();" data-toggle="tooltip" data-placement="top" title="&#8593 or i or W">
                     <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
@@ -256,19 +264,19 @@
         </div>
         <div class="col-xs-1">
         </div>
-        <div class="col-xs-1">
+        <div class="col-xs-1" style="padding:0 0 0 0">
            
           <button type="button" class="btn btn-default btn-block" onclick="previousComment();" data-toggle="tooltip" data-placement="top" title="&#8592 or J or A">
                     <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
           </button>
         </div>
-        <div class="col-xs-1">
+        <div class="col-xs-1" style="padding:0 0 0 0">
            
           <button type="button" class="btn btn-default btn-block" onclick="nextPhrase();" data-toggle="tooltip" data-placement="bottom" title="&#8595 or K or S">
                     <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
           </button>
         </div>
-        <div class="col-xs-1">
+        <div class="col-xs-1" style="padding:0 0 0 0">
            
           <button type="button" class="btn btn-default btn-block" onclick="nextComment();" data-toggle="tooltip" data-placement="top" title="&#8594 or L or D">
                     <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
@@ -294,7 +302,7 @@
         </div>
         <div class="col-xs-1">
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-3" style="padding:0 0 0 0">
            
           <button type="button" class="btn btn-default btn-block" onclick="toggleDirectiveField();" data-toggle="tooltip" data-placement="right" title="(space)">
                   change class
@@ -321,8 +329,8 @@
         <div class="col-xs-2" style="text-align:right; padding-right:0">
           <label class="">Comment ID</label>
         </div>
-        <div class="col-xs-1" style="padding-left:1;font-weight:bold;">
-            <input id="id_comment" style="width:140%" onchange="changeId();">
+        <div class="col-xs-1" style="padding-left:6px; padding-right:3px; font-weight:bold;">
+            <input id="id_comment" style="width:100%" onchange="changeId();">
         </div>
         <div class="col-xs-1" style="padding-bottom:3px; padding-top:2px; padding-left:0px">
           <label id="id_comment_total">/maxID</label>
@@ -1123,24 +1131,19 @@
             console.error("ajaxCallbackNewProject should show an error");
             $('#ajaxCallbackNewProject').append(successMsg);
             document.getElementById('ajaxCallbackNewProject').style.display = "";
+          } else {
+
+            // open file to show comments in the webpage
+            var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
+              showComments(fileToOpen.responseText);
+            });
           }
-
-          //TODO: llamar a subir el archivo
-          //var csvfile = data["csvfile"];          
-
-
-          // open file to show comments in the webpage
-          var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
-            showComments(fileToOpen.responseText);
-          });
-          
         }
       });//END AJAX
     }
 
     window.folderBtn = function()
     {
-          console.info("folderBtn called");
       var fileInput = $('#folderNew')[0];
       var formdata = new FormData();
 
@@ -1148,7 +1151,6 @@
           formdata.append('folderPost[]',fileInput.files[i]);
           formdata.append('folderPostFullDirectory[]',fileInput.files[i].webkitRelativePath);
       }
-          console.info("folderBtn 2");
 
       $.ajax({
         url: "uploadFolder.php", //if url is not set, then we are sending data to this same file
@@ -1164,19 +1166,15 @@
           if (success != 0){
             $('#ajaxCallbackUploadFolder').append(successMsg);
             document.getElementById('ajaxCallbackUploadFolder').style.display = "";
+          } else {
+          
+
+            _projectName = data["projectName"];//returns the name of the uploaded folder
+            callNewProjectPHP(_projectName);
+
+            var numUploadedFiles = data["uploadedFilesCount"]; //TODO: show this number somewhere on the webpage (maybe)
+
           }
-          
-
-          _projectName = data["projectName"];//returns the name of the uploaded folder
-          callNewProjectPHP(_projectName);
-
-          var numUploadedFiles = data["uploadedFilesCount"]; //TODO: show this number somewhere on the webpage (maybe)
-
-
-
-
-          console.debug(data["debug"]);
-          
         }
       });//END AJAX
     }
@@ -1203,14 +1201,13 @@
           if (success != 0){
             $('#ajaxCallbackUploadFile').append(successMsg);
             document.getElementById('ajaxCallbackUploadFile').style.display = "";
+          } else {
+      
+            // open file to show comments in the webpage
+            var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
+              showComments(fileToOpen.responseText);
+            });
           }
-
-          
-          // this code was moved to openProjectFromFile(). It's not necessary to upload the file because we work with localstorage of this project.
-          // // open file to show comments in the webpage
-          // var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
-          //   showComments(fileToOpen.responseText);
-          // });
 
         }
       });//END AJAX
@@ -1241,19 +1238,29 @@
       populateDirectiveSettedValuesDictionary();
 
       document.getElementById('buttons_and_comments').style.display = "";
+      hideUpperButtonsAndShowProjectName();
     }
 
     window.openProjectFromFile = function(aFile)
     {
       _projectName = aFile.name.split('.')[0];
       var reader = new FileReader();
+
       reader.onload = function(progressEvent){
-        //uploadFilePHP(aFile); //this is old code. left just in case for a while
-        showComments(this.result);
-        // // open file to show comments in the webpage  //this is old code. left just in case fow a while
-        // var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
-        //   showComments(fileToOpen.responseText);
-        // });
+        //checkeo si el archivo ya existe
+        var jqxhr = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
+          //do nothing
+        })
+          .done(function(){ // si ya existe, solo muestro los la visualizacion de los comentarios en la aplicacion
+
+            var fileToOpen = $.get("./projects/"+_projectName+"/CHi-files/"+_projectName+".chi", function() {
+              showComments(jqxhr.responseText);
+            });
+          })
+          .fail(function(){ // si no existe el archivo, hay que subirlo al servidor
+            uploadFilePHP(aFile);
+          });
+
       };
       reader.readAsText(aFile);
     }
@@ -1321,12 +1328,55 @@
 
 
 
+  function wekaExport() {
+      var formdata = new FormData();
+
+      formdata.append('exportString',localStorage2ExportString());
+      if (_projectName != undefined) {
+        formdata.append('projectName',_projectName);
+      } else {
+        console.info("MyError: global variable _projectName is undefined");
+      }
+
+      $.ajax({
+        url: "exportWekaFile.php",
+        data: formdata,
+        contentType: false,
+        processData: false,
+        type: "POST",
+        dataType: "json",
+        success: function(data){
+          console.info("success! returned from exportWekaFile.php");
+
+          var success = data["success"];
+          var successMsg = data["successMsg"];
+          if (success != 0){
+            $('#ajaxCallbackExportWekaFile').append(successMsg);
+            document.getElementById('ajaxCallbackExportWekaFile').style.display = "";
+          }
+          
+          var link_download = $("#my_link_for_export_weka_file")[0];
+
+          link_download.download = _projectName+"-Weka.arff";
+          link_download.href = "projects/"+_projectName+"/CHi-files/"+_projectName+"-export.arff";
+          link_download.click();
+
+
+        }
+      });//End AJAX
+  }
 
 
 
 
 
 
+
+  window.hideUpperButtonsAndShowProjectName = function() {
+    document.getElementById('upperButtonsContainer').style.display = "none";
+    document.getElementById('ProjectNameLabel').style.display = "";
+    $('#ProjectNameLabel').append("<div class='col-sm-11'><h2 class='text-center'>Project: "+_projectName+"</h2></div><div class='col-sm-1'></div>");
+  }
 
 
 

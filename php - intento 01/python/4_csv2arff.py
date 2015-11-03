@@ -1,6 +1,7 @@
-"""Converts a .csv file to a .arff file. Output file has the same name as input file, but with the extension changed to .arff"""
+"""Converts a .csv file to a .arff file. Output file has the same name as input file, but with the extension changed to .arff
+   Output file is created in the same folder of the input file"""
 
-"""for now it only works for 2 columns: text,number       fix mysplit to make it work for more columns"""
+"""Note: for now it only works for 2 columns: text,number       fix mysplit to make it work for more columns"""
 
 import re
 import csv,sys
@@ -31,7 +32,21 @@ if len(sys.argv)<=1:
 		Note that double quotes are needed when writing the set {} of Nominal types.')
 	sys.exit()
 
-with open(sys.argv[1]) as filein:
+
+
+
+
+
+
+filename_in_fullPath = sys.argv[1]
+filename_out_fullPath = filename_in_fullPath[:filename_in_fullPath.rindex('_')]+'.arff'
+
+
+
+
+
+
+with open(filename_in_fullPath) as filein:
 	for line in filein:
 		firstLine = line
 		break
@@ -48,7 +63,7 @@ with open(sys.argv[1]) as filein:
 
 
 
-	with open(sys.argv[1][:-3]+'arff',"w") as fdout:
+	with open(filename_out_fullPath,"w") as fdout:
 		fdout.write("% 1. Title: arff file created from "+ sys.argv[1] +"\n\n")
 		fdout.write("@RELATION \""+sys.argv[1][:-3]+"arff\"\n\n")
 

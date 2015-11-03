@@ -64,22 +64,6 @@ ChromePhp::log("7");
 ChromePhp::log("8");
 
 
-// The following commented code should be on a new <aName>.php file, triggered when user wants to export to an .arff file
-
-// ChromePhp::log( 'deleting unnecesary data from .csv file');
-// exec('python ./python/3_leave_only_text_and_class_in_the_csv.py Comments_WebOutput.csv',$result, $statusreturn);
-// showExecOut($result,$statusreturn);
-// unset($result);
-// $result = array();
-// ChromePhp::info('python ./python/3_leave_only_text_and_class_in_the_csv.py Comments_WebOutput.csv');
-
-
-// ChromePhp::log( 'transforming .csv file to an .arff file');
-// exec('python ./python/4_csv2arff.py "Comments_WebOutput_(only comments and class).csv" string "{non-directive,directive}"',$result, $statusreturn);
-// showExecOut($result,$statusreturn);
-// unset($result);
-// $result = array();
-// ChromePhp::info('python ./python/4_csv2arff.py "Comments_WebOutput_(only comments and class).csv" string "{non-directive,directive}"');
 
 
 echo json_encode($ret);
