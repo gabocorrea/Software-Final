@@ -1,7 +1,6 @@
 <?php
 // include "C:\Program Files\chromePHP\ChromePhp.php";
-// 
-//error_reporting(E_ALL);
+
 
 header('Content-type: application/json'); //don't know what this line does, so i commented it
 

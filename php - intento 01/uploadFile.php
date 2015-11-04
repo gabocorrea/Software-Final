@@ -5,12 +5,12 @@
  * the file is moved (in the server) from it's temp folder to the corresponding project folder, creating
  * folders to that path if needed.
  */
-include "C:\Program Files\chromePHP\ChromePhp.php";
-// ChromePhp::log("1");
+// include "C:\Program Files\chromePHP\ChromePhp.php";
+
 
 //header('Content-type: application/json'); //don't know what this line does, so i commented it
 
-//error_reporting(E_ALL);
+// error_reporting(E_ALL);
 $CHiFolderName = 'CHi-files';
 
 $fileName = $_FILES['fileUploaded']['name'];

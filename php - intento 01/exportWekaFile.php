@@ -1,10 +1,8 @@
 <?php
-include "C:\Program Files\chromePHP\ChromePhp.php";
+// include "C:\Program Files\chromePHP\ChromePhp.php";
 
-error_reporting(E_ALL);
-/* falta mostrar de alguna forma, los errores de este script */
+// error_reporting(E_ALL);
 
-// ChromePhp::log("projectName:".$_POST['projectName']);
 
 
 $projectName = $_POST['projectName'];
@@ -26,7 +24,6 @@ $ret['successMsg'] = "Success saving modifications";
 
 
 
-ChromePhp::log( 'exporting web modifications');
 file_put_contents($userModificationsPath, $_POST['exportString']);
 exec('python ./python/2_process_web_output.py projects/'.$projectName.'/CHi-files/'.$projectName.'.chi '.$userModificationsPath,$result, $statusreturn);
 if ($statusreturn!=0){
@@ -39,7 +36,6 @@ $result = array();
 
 
 
-ChromePhp::log( 'deleting unnecesary data from .csv file');
 exec('python ./python/3_leave_only_text_and_class_in_the_csv.py projects/'.$projectName.'/CHi-files/'.$projectName.'-export.csv',$result, $statusreturn);
 if ($statusreturn!=0){
   $ret["success"] = 2;
@@ -48,10 +44,8 @@ if ($statusreturn!=0){
 showExecOut($result,$statusreturn);
 unset($result);
 $result = array();
-ChromePhp::info('python ./python/3_leave_only_text_and_class_in_the_csv.py Comments_WebOutput.csv');
 
 
-ChromePhp::log( 'transforming .csv file to an .arff file');
 exec('python ./python/4_csv2arff.py "projects/'.$projectName.'/CHi-files/'.$projectName.'-export_(only comments and class).csv" string "{non-directive,directive}"',$result, $statusreturn);
 if ($statusreturn!=0){
   $ret["success"] = 3;
@@ -60,7 +54,6 @@ if ($statusreturn!=0){
 showExecOut($result,$statusreturn);
 unset($result);
 $result = array();
-ChromePhp::info('python ./python/4_csv2arff.py "Comments_WebOutput_(only comments and class).csv" string "{non-directive,directive}"');
 
 
 

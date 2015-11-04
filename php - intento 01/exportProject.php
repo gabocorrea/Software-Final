@@ -1,10 +1,8 @@
 <?php
-include "C:\Program Files\chromePHP\ChromePhp.php";
+// include "C:\Program Files\chromePHP\ChromePhp.php";
 
-error_reporting(E_ALL);
-/* falta mostrar de alguna forma, los errores de este script */
+// error_reporting(E_ALL);
 
-// ChromePhp::log("projectName:".$_POST['projectName']);
 
 
 $projectName = $_POST['projectName'];
@@ -20,7 +18,6 @@ $ret = array();
 $ret['success'] = 0;
 $ret['successMsg'] = "Success saving modifications";
 
-// ChromePhp::log( 'exporting web modifications');
 file_put_contents($userModificationsPath, $_POST['exportString']);
 exec('python ./python/2_process_web_output.py projects/'.$projectName.'/CHi-files/'.$projectName.'.chi '.$userModificationsPath,$result, $statusreturn);
 if ($statusreturn!=0){
@@ -31,7 +28,6 @@ showExecOut($result,$statusreturn);
 unset($result);
 $result = array();
 
-// ChromePhp::log( 'done');
 
 
 echo json_encode($ret);

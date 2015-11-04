@@ -109,10 +109,6 @@
 
   <div class="container" style="margin-top: 11px;" style="display:none;">
 
-  <div id="ProjectNameLabel" class="container center-block">
-    
-
-  </div>
 
   <div id="upperButtonsContainer" class="container center-block text-center" >
     
@@ -198,6 +194,8 @@
   </div>
 
 
+  <div id="ProjectNameLabel" class="container center-block">
+  </div>
 
 
   </br>
@@ -454,7 +452,7 @@
         </button>
       </div>
     <div class="col-sm-1">
-        <button type="button" class="btn btn-danger btn-sm" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="All your project's modifications are forgotten">
+        <button type="button" class="btn btn-danger btn-sm" onclick="eraseLocalStorage();" data-toggle="tooltip" data-placement="top" title="Modifications done to this project are forgotten">
           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
           Erase Modifications
         </button>
@@ -649,7 +647,6 @@
 
   function nextPhrase()
   {
-    console.log("nextPhrase");
     if (phrase_pointer<lines_current_subset.length) {
       phrase_pointer += 1;
       updateText();
@@ -678,7 +675,6 @@
 
   function nextComment()
   {
-    console.log("nextComment");
     if (current_line_pointer<lines.length-1) {
       current_line_pointer += lines_current_subset.length;
       calculateCurrentLinesSubset();
@@ -704,10 +700,9 @@
       if (offset=='start') {
         phrase_pointer=1;
       } else if (offset == 'end') {
-        console.log("previousComment 001")
         phrase_pointer=lines_current_subset.length;
       } else {
-        alert('myError: called previousComment() function with an incorrect parameter');
+        console.error('myError: called previousComment() function with an incorrect parameter');
       }
       updateText();
       updateId();
@@ -720,7 +715,6 @@
   // Agrega las frases del comentario actual (id actual) a un arreglo global.
   function calculateCurrentLinesSubset()
   {
-    console.log("calculateCurrentLinesSubset");
     var current_line_pointer_cpy = current_line_pointer;
 
     lines_current_subset=[];
@@ -738,7 +732,6 @@
       lines_current_subset.push(lines[current_line_pointer_cpy]);
       current_line_pointer_cpy++;
     }
-    console.log("calculateCurrentLinesSubset end");
   }
 
   function getPreviousLinesSubset()
@@ -749,7 +742,7 @@
     for (var i=1; i<5000;i++) { //maximo examinar 5000 lineas (ojo: hay un break adentro del loop) por si llega a haber un loop infinito
       if (current_line_pointer_cpy<=1) {
         if ( i==1 ) {
-          console.info('cant go to previous comment because this one is the first one.');
+          // do nothing
         } else {
           
         }
@@ -759,7 +752,6 @@
       id = mysplit(lines[current_line_pointer_cpy],',',1)[0];
 
       if ( i>1 && id!=lastId) {
-        console.log('break (bueno) with i='+i);
         break;
       }
       lastId = id;
@@ -786,7 +778,6 @@
   }
   function updateJavaClass()
   {
-    console.log("updateJavaClass");
     var line = mysplit(lines_current_subset[phrase_pointer-1],',',5);
     var path = line[4];
 
@@ -815,13 +806,11 @@
     }
     var s = split[split.length-1];
     showJavaClass(s);
-    console.log("updateJavaClass end");
   }
 
 
   function updateText()
   {
-    console.log("updateText()");
     var comment = '';
 
     
@@ -877,7 +866,7 @@
     }
     showText(comment);
 
-    console.log("updateText() end");
+    
   }
 
 
@@ -891,7 +880,6 @@
     }
     if ( is_directive_setted_values[myLineVar[0]][phrase_pointer] == undefined ) {
       aNumberStr = myLineVar[2];
-      //TODO: aca sería deseable chequear que is_directive tiene el formato de numero.. y no fue leido mal del archivo
     } else {
       aNumberStr = is_directive_setted_values[myLineVar[0]][phrase_pointer];
     }
@@ -907,7 +895,7 @@
     } else if (is_directive == '3') {
       is_directive_setted_values[myLineVar[0]][phrase_pointer] = '2'
     } else {
-      console.error("esto no deberia pasar, is_directive="+is_directive);
+      console.error("error determinando la clase de un comentario (is_directive="+is_directive+")");
     }
     myAddItemToLocalStorage(myLineVar[0], phrase_pointer, is_directive_setted_values[myLineVar[0]][phrase_pointer]);
 
@@ -920,7 +908,7 @@
       var phrases = ids[key];
 
       if (typeof(phrases) != 'object') {
-        console.info('myInfo! found element in localStorage that isnt an object - skipping it');
+        console.warn('myInfo: found element in localStorage that isnt an object - skipping it');
       } else {
         is_directive_setted_values[key] = {};
         for (key_2 in phrases) {
@@ -938,23 +926,8 @@
 
       var ids = JSON.parse( localStorage.getItem(_projectName) );
 
-      console.log('\n-------- localStorage for this project  before being erased: ---------');
-      for (key in ids){
-        console.log(key+':'+ids[key]);
-      }
-      if (Object.keys(ids).length<1){
-        console.log('((( localStorage for this project is empty )))');
-      }
-
       localStorage.removeItem(_projectName);
       
-      console.log('\n\n-------- localStorage for this project after being erased: ---------');
-      for (key in ids){
-        console.log(key+':'+ids[key]);
-      }
-      if (Object.keys(ids).length<1){
-        console.log('((( localStorage for this project is empty )))');
-      }
     }
   }
 
@@ -1000,7 +973,7 @@
               lastId = undefined;
               stop = undefined;
               for (var j=i; j>1;j--){
-                console.log(j);
+                
                 id = mysplit(lines[j],',',1)[0];
                 id_int = parseInt(id);
                 if (lastId!=undefined && lastId!=id_int){
@@ -1026,10 +999,10 @@
 
 
       } else { // else, if number is not in a valid range
-        console.log('!   id entered is out of range. do nothing   !');
+        console.info('!   id entered is out of range. do nothing   !');
       }
     } else { //else, if id value entered by user is not a number
-      console.log('!   invalid id entered. do nothing   !');
+      console.info('!   invalid id entered. do nothing   !');
       return;
     }
   }
@@ -1051,7 +1024,6 @@
     window.showText = function(str)
     {
       
-      ////// Last version: splitted_line[5].replace(/<[^>]+>/g,'') //esto es para ignorar todos los tags
       str = str.replace(/<\/?p>/g,'');
       str = str.replace(/<\/?ul>/g,'');
       str = str.replace(/<\/?dl>/g,'');
@@ -1123,12 +1095,12 @@
         type: "POST",
         dataType: "json",
         success: function(data){
-          console.info("success! returned from newProject.php");
+          console.debug("success! returned from newProject.php");
 
           var success = data["success"];
           var successMsg = data["successMsg"];
           if (success != 0){
-            console.error("ajaxCallbackNewProject should show an error");
+            console.debug("#ajaxCallbackNewProject should show an error");
             $('#ajaxCallbackNewProject').append(successMsg);
             document.getElementById('ajaxCallbackNewProject').style.display = "";
           } else {
@@ -1160,7 +1132,7 @@
         method: "POST",
         dataType: "json",
         success: function(data){
-          console.info("success! returned from uploadFolder.php");
+          console.debug("success! returned from uploadFolder.php");
           var success = data["success"];
           var successMsg = data["successMsg"];
           if (success != 0){
@@ -1173,7 +1145,7 @@
             callNewProjectPHP(_projectName);
 
             var numUploadedFiles = data["uploadedFilesCount"]; //TODO: show this number somewhere on the webpage (maybe)
-
+            $('#folder_name').val(numUploadedFiles+" files uploaded");
           }
         }
       });//END AJAX
@@ -1195,7 +1167,7 @@
         method: "POST",
         dataType: "json",
         success: function(data){
-          console.info("success! returned from uploadFile.php");
+          console.debug("success! returned from uploadFile.php");
           var success = data["success"];
           var successMsg = data["successMsg"];
           if (success != 0){
@@ -1238,7 +1210,7 @@
       populateDirectiveSettedValuesDictionary();
 
       document.getElementById('buttons_and_comments').style.display = "";
-      hideUpperButtonsAndShowProjectName();
+      ShowProjectName();
     }
 
     window.openProjectFromFile = function(aFile)
@@ -1294,7 +1266,7 @@
       if (_projectName != undefined) {
         formdata.append('projectName',_projectName);
       } else {
-        console.info("MyError: global variable _projectName is undefined");
+        console.warn("myWarn: global variable _projectName is undefined");
       }
 
       $.ajax({
@@ -1305,7 +1277,7 @@
         type: "POST",
         dataType: "json",
         success: function(data){
-          console.info("success! returned from exportProject.php");
+          console.debug("success! returned from exportProject.php");
 
           var success = data["success"];
           var successMsg = data["successMsg"];
@@ -1335,7 +1307,7 @@
       if (_projectName != undefined) {
         formdata.append('projectName',_projectName);
       } else {
-        console.info("MyError: global variable _projectName is undefined");
+        console.warn("myWarn: global variable _projectName is undefined");
       }
 
       $.ajax({
@@ -1346,7 +1318,7 @@
         type: "POST",
         dataType: "json",
         success: function(data){
-          console.info("success! returned from exportWekaFile.php");
+          console.debug("success! returned from exportWekaFile.php");
 
           var success = data["success"];
           var successMsg = data["successMsg"];
@@ -1372,10 +1344,10 @@
 
 
 
-  window.hideUpperButtonsAndShowProjectName = function() {
-    document.getElementById('upperButtonsContainer').style.display = "none";
+  window.ShowProjectName = function() {
+    //document.getElementById('upperButtonsContainer').style.display = "none";
     document.getElementById('ProjectNameLabel').style.display = "";
-    $('#ProjectNameLabel').append("<div class='col-sm-11'><h2 class='text-center'>Project: "+_projectName+"</h2></div><div class='col-sm-1'></div>");
+    $('#ProjectNameLabel').append("<div class='col-sm-11'><h3 class='text-center' style='margin:0 0 0 0'>Project: "+_projectName+"</h3></div><div class='col-sm-1'></div>");
   }
 
 
@@ -1398,17 +1370,12 @@
       console.error("problem getting info from localStorage: projectName is not saved in the server");
     }
 
-    console.info(ids);
-
     if (ids[id] === undefined){
       ids[id] = {};
     }
-    console.log(ids[id][sub_id]);
+    
     ids[id][sub_id] = value;
-    console.log(ids[id][sub_id]);
-    console.log("value:"+value);
-
-    console.info(JSON.stringify( ids));
+  
     localStorage.setItem( _projectName,JSON.stringify( ids) );
 
   }
@@ -1454,12 +1421,12 @@
     if (Object.keys(localStorage).length>0) {
       thisProjectDictionary = JSON.parse( localStorage.getItem(_projectName) );
       if (thisProjectDictionary === undefined || thisProjectDictionary === null) {
-        console.error("problem getting info from localStorage: projectName is not saved in the server");
+        console.error("myError: problem getting info from localStorage: projectName is not saved in the server");
       } else {
         for (key in thisProjectDictionary){
           
           if (typeof(thisProjectDictionary) != 'object') {
-            console.error("myInfo: an internal data element was not an object -> localStorage["+key+"]=="+localStorage[key]);
+            console.error("myError: an internal data element was not an object -> localStorage["+key+"]=="+localStorage[key]);
           }
           else {
             s='';
@@ -1474,12 +1441,24 @@
     return ret;
   }
 
+  function localStorage2ShowModificationsString(){
+    if (localStorage[_projectName]=="{}"){
+      return '-- no modifications yet --';
+    }
+    var ret = 'Comment ID,Phrase,color(0==no-color; 1==yellow; 2==light-blue; 3==orangish)\n';
+    var rest = localStorage2ExportString();
+
+    ret += rest.substring(rest.indexOf('\n')+1);
+
+    return ret;
+  }
+
 
 
   function showModifications() {
       if (outHidden) {
         $("#outText").empty();
-        $("#outText").append( localStorage2ExportString() );
+        $("#outText").append( localStorage2ShowModificationsString() );
         $('#outText').show();
         outHidden = false;
         $("#ShowHideModificationsButtonIcon").addClass('glyphicon-collapse-up').removeClass('glyphicon-collapse-down');
